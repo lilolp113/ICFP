@@ -1,0 +1,791 @@
+.dgGrid {
+	position: relative;
+	overflow: hidden;
+	background: #fff;
+	border: 1px solid #ccc;
+	text-align: left;
+	font-family:微软雅黑,Arial, Helvetica, sans-serif;
+	font-size: 12px;
+}
+
+.dgGrid table {
+	border-collapse: separate;
+	border-spacing: 0;
+	text-align: left;
+	table-layout: fixed;
+}
+
+.dgGrid input[type="radio"],.dgGrid input[type="checkbox"] {
+	margin: 0;
+}
+
+/* 遮罩 */
+.dgGrid .dg-mask {
+	position: absolute;
+	left: 0;
+	top: 0;
+	display: none;
+	width: 100%;
+	height: 100%;
+	background: #ddd;
+}
+
+/* 半透明 */
+.dgGrid .dg-transparent { /* IE 8 */
+	-ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=50)";
+	/* IE 5-7 */
+	filter: alpha(opacity = 50);
+	/* Netscape */
+	-moz-opacity: 0.5;
+	/* Safari 1.x */
+	-khtml-opacity: 0.5;
+	/* Good browsers */
+	opacity: 0.5;
+}
+
+/* loading */
+.dgGrid .dg-loading {
+	position: absolute;
+	display: none;
+	text-align: center;
+}
+
+.dgGrid .dg-loading .dg-loadingImg {
+	margin: 5px auto;
+	width: 32px;
+	height: 32px;
+	background: url(../images/grid/loading.gif) no-repeat center center;
+}
+
+.dgGrid .dg-loading .dg-loadingText {
+	
+}
+
+/* 标题包装 */
+.dgGrid .dg-headWrapper {
+	position: relative;
+	overflow: hidden;
+	width: 9999px;
+	background: #eee; /* Old browsers */
+	background: -moz-linear-gradient(top, #f9f9f9 0%, #eaeaea 100%);
+	/* FF3.6+ */
+	background: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #f9f9f9),
+		color-stop(100%, #eaeaea) ); /* Chrome,Safari4+ */
+	background: -webkit-linear-gradient(top, #f9f9f9 0%, #eaeaea 100%);
+	/* Chrome10+,Safari5.1+ */
+	background: -o-linear-gradient(top, #f9f9f9 0%, #eaeaea 100%);
+	/* Opera 11.10+ */
+	background: -ms-linear-gradient(top, #f9f9f9 0%, #eaeaea 100%);
+	/* IE10+ */
+	background: linear-gradient(to bottom, #f9f9f9 0%, #eaeaea 100%);
+	/* W3C */
+	filter: progid : DXImageTransform.Microsoft.gradient (   startColorstr =
+		'#f9f9f9', endColorstr = '#eaeaea', GradientType = 0 ); /* IE6-8 */
+	-moz-box-shadow: 0 0px 2px #bbb;
+	-webkit-box-shadow: 0 0px 2px #bbb;
+	box-shadow: 0 0px 2px #bbb;
+	z-index: 1;
+	background: #fafafa url(../images/grid/fhbg.gif) repeat-x bottom;
+}
+
+/* 标题 */
+.dgGrid .dg-headWrapper .dg-head {
+	position: relative;
+	color: #005599;
+}
+
+.dgGrid .dg-headWrapper .dg-head th {
+	position: relative;
+	padding: 0 5px;
+	border-right: 1px solid #ddd;
+	border-left: 1px solid #fff;
+	border-bottom: 1px solid #d2d2d2;
+	
+}
+
+.dgGrid .dg-headWrapper .dg-head th:hover{
+	border-bottom: 1px solid orange;
+}
+
+.dgGrid .dg-headWrapper .dg-head th input {
+	height: 30px;
+}
+
+.dgGrid .dg-headWrapper .dg-head th .dg-titleWrapper {
+	position: relative;
+	height: 30px;
+	white-space: nowrap;
+	cursor: default;
+}
+
+.dgGrid .dg-headWrapper .dg-head th .dg-titleWrapper .dg-colResize {
+	position: absolute;
+	top: 0;
+	right: -6px;
+	_right: -4px;
+	width: 4px;
+	height: 100%;
+	cursor: col-resize;
+}
+
+.dgGrid .dg-headWrapper .dg-head th .dg-titleWrapper .dg-title {
+	display: inline-block; *
+	display: inline; *
+	zoom: 1;
+	height: 30px;
+	font-weight: normal;
+	line-height: 30px;
+	vertical-align: top;
+}
+
+.dgGrid .dg-headWrapper .dg-head th .dg-titleWrapper .dg-canSort {
+	cursor: pointer;
+}
+
+.dgGrid .dg-headWrapper .dg-head th .dg-titleWrapper .dg-sort {
+	overflow: hidden;
+	display: none;
+	width: 7px;
+	height: 30px;
+	margin-left: 2px;
+	vertical-align: top;
+}
+
+.dgGrid .dg-headWrapper .dg-head th .dg-titleWrapper .dg-asc {
+	display: inline-block; *
+	display: inline; *
+	zoom: 1;
+	background: url(../images/grid/sort-asc.png) no-repeat center center;
+}
+
+.dgGrid .dg-headWrapper .dg-head th .dg-titleWrapper .dg-desc {
+	display: inline-block; *
+	display: inline; *
+	zoom: 1;
+	background: url(../images/grid/sort-desc.png) no-repeat center center;
+}
+
+.dgGrid  .dg-colResizePointer {
+	position: absolute;
+	top: 0;
+	left: 0;
+	display: none;
+	width: 1px;
+	height: 100%;
+	background: #999;
+	cursor: col-resize;
+	z-index: 1;
+}
+
+.dgGrid  .dg-colResizePointer-before {
+	position: absolute;
+	top: 0;
+	left: 0;
+	display: none;
+	width: 1px;
+	height: 100%;
+	background: #999;
+	cursor: col-resize;
+	z-index: 1;
+}
+
+/* 背板 */
+.dgGrid .dg-backboard {
+	position: relative;
+	display: none;
+	background-image: url(../images/grid/furley_bg.png);
+	background-image: -webkit-image-set(url(../images/grid/furley_bg.png) 1x, url(../images/grid/furley_bg_@2X.png)
+		2x);
+	-webkit-box-shadow: inset 0 0 2px 1px #d9d9d9;
+	-moz-box-shadow: inset 0 0 2px 1px #d9d9d9;
+	-o-box-shadow: inset 0 0 2px 1px #d9d9d9;
+	-ms-box-shadow: inset 0 0 2px 1px #d9d9d9;
+	box-shadow: inset 0 0 2px 1px #d9d9d9;
+	text-align: left;
+}
+
+.dgGrid .dg-backboard h1 {
+	margin: 0 10px 5px 10px;
+	padding: 10px 0 5px 0;
+	font-size: 1em;
+	font-weight: bold;
+	line-height: 1.8;
+	border-bottom: 1px solid #ccc;
+}
+
+.dgGrid .dg-backboard label {
+	display: inline-block; *
+	display: inline; *
+	zoom: 1;
+	width: 95px;
+	font-size: 1em;
+	line-height: 2.2;
+	white-space: nowrap;
+	overflow: hidden;
+	text-overflow: ellipsis;
+}
+
+.dgGrid .dg-backboard label input {
+	margin: 0 5px 0 10px;
+	padding: 0px;
+	border: 0px;
+}
+
+/* 内容包装器 */
+.dgGrid .dg-bodyWrapper {
+	position: relative;
+	overflow: auto;
+	width: 9999px;
+	min-height: 0%;
+	/* fix IE9 hover bug see: http://jsfiddle.net/pjkix/86Lfv/ */
+}
+
+/* 内容 */
+.dgGrid .dg-bodyWrapper .dg-body {
+	
+}
+
+.dgGrid .dg-bodyWrapper .dg-body tr {
+	
+}
+
+.dgGrid .dg-bodyWrapper .dg-body tr td.novstripe{
+	border-right: 1px solid #fff;
+	border-left: 1px solid #fff;
+}
+
+.dgGrid .dg-bodyWrapper .dg-body tr.even {
+	background: #f9f9f9;
+}
+
+.dgGrid .dg-bodyWrapper .dg-body tr.even td.novstripe{
+	border-right: 1px solid #f9f9f9;
+	border-left: 1px solid #f9f9f9;
+}
+
+.dgGrid .dg-bodyWrapper .dg-body td {
+	padding: 0 5px;
+	line-height: 30px;
+}
+
+.dgGrid .dg-bodyWrapper .dg-body td.vstripe {
+	border-right: 1px solid #ddd;
+	border-left: 1px solid #fff;
+}
+
+.dgGrid .dg-bodyWrapper .dg-body tr td.novstripe {
+	
+}
+
+
+.dgGrid .dg-bodyWrapper .dg-body td.colSelected {
+	background: #f7f7f7;
+}
+
+.dgGrid .dg-bodyWrapper .dg-body td.colSelected.novstripe {
+	border-right: 1px solid #f7f7f7;
+	border-left: 1px solid #f7f7f7;
+}
+
+.dgGrid .dg-bodyWrapper .dg-body td.colSelectedEven {
+	background: #f5f5f5;
+}
+
+.dgGrid .dg-bodyWrapper .dg-body td.colSelectedEven.novstripe {
+	border-right: 1px solid #f5f5f5;
+	border-left: 1px solid #f5f5f5;
+}
+
+.dgGrid .dg-bodyWrapper .dg-body tr:hover td {
+	background: #EDFBD2;
+}
+
+.dgGrid .dg-bodyWrapper .dg-body tr:hover td.novstripe {
+	border-right: 1px solid #EDFBD2;
+	border-left: 1px solid #EDFBD2;
+}
+
+.dgGrid .dg-bodyWrapper .dg-body tr.selected td {
+	background: #D8F79D;
+}
+
+.dgGrid .dg-bodyWrapper .dg-body tr.selected td.novstripe {
+	border-right: 1px solid #D8F79D;
+	border-left: 1px solid #D8F79D;
+}
+
+
+.dgGrid .dg-bodyWrapper .dg-body td .dg-index {
+	color: #555;
+}
+
+.dgGrid .nowrap {
+	overflow: hidden;
+	white-space: nowrap;
+	text-overflow: ellipsis;
+	-o-text-overflow: ellipsis;
+	-ms-text-overflow: ellipsis;
+}
+
+/* 消息 */
+.dgGrid .dg-message {
+	position: absolute;
+	display: none;
+	text-align: center;
+}
+
+.dgGrid .dg-btnBackboardDn {
+	position: absolute;
+	top: 0;
+	left: 20px;
+	display: block;
+	width: 50px;
+	height: 20px;
+	background: #fff url(../images/grid/arrow_down.png) no-repeat center center;
+	border: 1px solid #ccc;
+	border-top: 0;
+	-webkit-border-radius: 2px;
+	-moz-border-radius: 2px;
+	border-radius: 2px;
+	-webkit-box-shadow: 1px 1px 3px #ccc;
+	-moz-box-shadow: 1px 1px 3px #ccc;
+	-o-box-shadow: 1px 1px 3px #ccc;
+	-ms-box-shadow: 1px 1px 3px #ccc;
+	box-shadow: 1px 1px 3px #ccc;
+	cursor: pointer;
+}
+
+.dgGrid .dg-backboard .dg-btnBackboardUp {
+	position: absolute;
+	left: 20px;
+	bottom: 0;
+	display: block;
+	width: 50px;
+	height: 20px;
+	background: #fff url(../images/grid/arrow_up.png) no-repeat center center;
+	border: 1px solid #ccc;
+	border-bottom: 0;
+	-webkit-border-radius: 2px;
+	-moz-border-radius: 2px;
+	border-radius: 2px;
+	-webkit-box-shadow: 1px 1px 3px #ccc;
+	-moz-box-shadow: 1px 1px 3px #ccc;
+	-o-box-shadow: 1px 1px 3px #ccc;
+	-ms-box-shadow: 1px 1px 3px #ccc;
+	box-shadow: 1px 1px 3px #ccc;
+	cursor: pointer;
+}
+
+.dgGrid form{
+	margin: 0px;
+	padding: 0px;
+}
+
+/*title*/
+
+.dgtitle{
+	position: relative;
+	height:30px;
+	line-height:30px;
+	border-top:1px solid #ccc;
+	border-left:1px solid #ccc;
+    border-right:1px solid #ccc;
+    background: #eee; /* Old browsers */
+	background: -moz-linear-gradient(top, #f9f9f9 0%, #eaeaea 100%);
+	/* FF3.6+ */
+	background: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #f9f9f9),
+		color-stop(100%, #eaeaea) ); /* Chrome,Safari4+ */
+	background: -webkit-linear-gradient(top, #f9f9f9 0%, #eaeaea 100%);
+	/* Chrome10+,Safari5.1+ */
+	background: -o-linear-gradient(top, #f9f9f9 0%, #eaeaea 100%);
+	/* Opera 11.10+ */
+	background: -ms-linear-gradient(top, #f9f9f9 0%, #eaeaea 100%);
+	/* IE10+ */
+	background: linear-gradient(to bottom, #f9f9f9 0%, #eaeaea 100%);
+	/* W3C */
+	filter: progid : DXImageTransform.Microsoft.gradient (   startColorstr =
+		'#f9f9f9', endColorstr = '#eaeaea', GradientType = 0 ); /* IE6-8 */
+	-moz-box-shadow: 0 0px 2px #bbb;
+	-webkit-box-shadow: 0 0px 2px #bbb;
+	box-shadow: 0 0px 2px #bbb;
+}
+
+.dgtitle .title{
+	float: left;
+	margin-left: 10px;
+	font-size: 13px;
+	line-height:30px;
+	font-weight: bold;
+	
+}
+
+.dgtitle .title img{
+	margin-right:5px;
+	vertical-align: middle;
+}
+
+.dgtitle .toolbtn{
+	float: right;
+	margin-right: 20px;
+}
+
+.dgtitle .toolbtn{
+	margin-top:3px;
+	float: right;
+	margin-right: 10px;
+}
+
+.dgtitle .toolbtn a{
+	color: #339;
+	text-decoration: none;
+}
+
+.dgtitle .toolbtn a img{
+	margin-right:5px;
+	vertical-align: middle;
+}
+
+.dgtitle .toolbtn a:hover {
+	text-decoration: underline;
+}
+
+.dgtitle .toolbtn a.button {
+	display: inline-block;
+	zoom: 1; /* zoom and *display = ie7 hack for display:inline-block */
+	*display: inline;
+	vertical-align: baseline;
+	margin: 0 2px;
+	outline: none;
+	cursor: pointer;
+	text-align: center;
+	text-decoration: none;
+	font: 14px/100% Arial, Helvetica, sans-serif;
+	padding: .5em 2em .55em;
+	text-shadow: 0 1px 1px rgba(0,0,0,.3);
+	-webkit-border-radius: .5em; 
+	-moz-border-radius: .5em;
+	border-radius: .5em;
+	-webkit-box-shadow: 0 1px 2px rgba(0,0,0,.2);
+	-moz-box-shadow: 0 1px 2px rgba(0,0,0,.2);
+	box-shadow: 0 1px 2px rgba(0,0,0,.2);
+}
+.dgtitle .toolbtn a.button:hover {
+	text-decoration: none;
+}
+.dgtitle .toolbtn a.button:active {
+	position: relative;
+	top: 1px;
+}
+
+
+.dgtitle .toolbtn a.bigrounded {
+	-webkit-border-radius: 2em;
+	-moz-border-radius: 2em;
+	border-radius: 2em;
+}
+.dgtitle .toolbtn a.medium {
+	font-size: 12px;
+	padding-top: 1px;
+	padding-bottom: 1px;
+	padding-left: 5px;
+	padding-right: 5px;
+	line-height: 20px;
+}
+.dgtitle .toolbtn a.small {
+	font-size: 11px;
+	padding: .2em 1em .275em;
+}
+
+/* white */
+.dgtitle .toolbtn a.white {
+	color: #606060;
+	border: solid 1px #b7b7b7;
+	background: #fff;
+	background: -webkit-gradient(linear, left top, left bottom, from(#fff), to(#ededed));
+	background: -moz-linear-gradient(top,  #fff,  #ededed);
+	filter:  progid:DXImageTransform.Microsoft.gradient(startColorstr='#ffffff', endColorstr='#ededed');
+}
+.dgtitle .toolbtn a.white:hover {
+	background: #ededed;
+	background: -webkit-gradient(linear, left top, left bottom, from(#fff), to(#dcdcdc));
+	background: -moz-linear-gradient(top,  #fff,  #dcdcdc);
+	filter:  progid:DXImageTransform.Microsoft.gradient(startColorstr='#ffffff', endColorstr='#dcdcdc');
+}
+.dgtitle .toolbtn a.white:active {
+	color: #999;
+	background: -webkit-gradient(linear, left top, left bottom, from(#ededed), to(#fff));
+	background: -moz-linear-gradient(top,  #ededed,  #fff);
+	filter:  progid:DXImageTransform.Microsoft.gradient(startColorstr='#ededed', endColorstr='#ffffff');
+}
+
+/*end title*/
+
+/*pagebar*/
+
+.pagebar {
+	position:relative;
+	height:25px;
+	line-height:25px;
+	padding-top:5px;
+    border-left:1px solid #ccc;
+    border-right:1px solid #ccc;
+    border-bottom:1px solid #ccc;
+    white-space: nowrap;
+    background-color: #fff;
+}
+
+.pagebar .dgheji{
+	height:25px;
+	line-height:20px;
+	float: left;
+}
+
+.pagebar .totalCountLabel{
+	float:right;
+    display: inline-block;
+    *display: inline;
+    *zoom: 1;
+    margin: 0 5px 0 0;
+    padding: 1px 0 0 0;
+    line-height: 1.5;
+    vertical-align: top;
+}
+
+.pagebar .totalCountLabel span{
+    color: #b00;
+    font-weight: bold;
+}
+
+.pagebar .pageList{
+	float:right;
+    display: inline-block;
+    *display: inline;
+    *zoom: 1;
+    margin: 0 5px 0 0;
+    padding: 0;
+    list-style: none;
+}
+.pagebar .pageList li.btn{
+    display: inline-block;
+    *display: inline;
+    *zoom: 1;
+    margin: 0 2px;
+    padding: 0 6px;
+    background: #fff;
+    border: 1px solid #ccc;
+    line-height: 1.5;
+    vertical-align: top;
+
+}
+
+.pagebar .pageList li.yema{
+    display: inline-block;
+    *display: inline;
+    *zoom: 1;
+    margin: 0 2px;
+    padding: 0 6px;
+    background: #fff;
+    line-height: 1.5;
+    vertical-align: top;
+
+}
+
+li.yema input{
+	margin: 0px;
+	position: relative;
+	width: 24px;
+	height: 14px;
+	text-align: center;
+	line-height: 14px;
+}
+li.yema span{
+	position: relative;
+	margin: 0px;
+}
+
+.pageList div.pButton {
+	float: left;
+	width: 19px;
+	height: 19px;
+	border: 0px;
+	cursor: pointer;
+	overflow: hidden;
+}
+
+.pageList div.pButton:hover{
+	cursor: pointer;
+}
+
+.pageList .pPrev {
+	background: url(../images/grid/prev_h.png) no-repeat center;
+}
+.pageList .pNext {
+	background: url(../images/grid/next_h.png) no-repeat center;
+}
+
+.pageList .pPrev:hover {
+	background: url(../images/grid/prev.gif) no-repeat center;
+}
+.pageList .pNext:hover {
+	background: url(../images/grid/next.gif) no-repeat center;
+}
+
+.pagebar .limit{
+	float:right;
+    display: inline-block;
+    *display: inline;
+    *zoom: 1;
+    line-height: 1.5;
+    vertical-align: top;
+}
+
+.pagebar .limit select{
+    border: 1px solid #ccc;
+    padding: 1px;
+    width: auto;
+    height: auto;
+    margin: 0;
+    line-height: 1.5;
+    font-size: 1em;
+}
+
+/*end pagebar*/
+
+/*toolbar*/
+
+.gridb{
+	position:absolute;
+	height:50px;
+}
+.gridb .le{
+	float:left;
+	width:22px;
+	height:50px;
+	background: url("../images/grid/toolbar/too_lef3.png") no-repeat bottom;
+}
+
+.gridb .leD{
+	background: url("../images/grid/toolbar/too_lef3D.png") no-repeat bottom;
+}
+
+.gridb .leU{
+	background: url("../images/grid/toolbar/too_lef3U.png") no-repeat top;
+}
+
+.gridb .btn{
+	text-align:center;
+	line-height:45px;
+	float:left;
+	padding-top:5px;
+	height:50px;
+	background: url("../images/grid/toolbar/too_cen3.png") repeat-x top;
+}
+
+
+.gridb .btn .inputb{
+	float:left;
+	height:50px;
+	margin-right: 7px;
+}
+
+.inputb a{
+	text-decoration: none;
+	float:left;
+	color: #fff;
+	margin-top:7px;
+	margin-left:5px;
+	cursor: pointer;
+	font: 900 14px/22px "微软雅黑", Helvetica, sans-serif;
+}
+
+.inputb a:hover{
+	color: #D8F79D;
+}
+
+.inputb a:focus{
+	outline: none;
+	-moz-outline-style:none;
+}
+
+.gridb .btn .inputs{
+	float:left;
+	height:50px;
+}
+
+.inputs a{
+	text-decoration: none;
+	float:left;
+	color: #fff;
+	margin-top:7px;
+	margin-left:5px;
+	cursor: pointer;
+	font: 900 14px/22px "微软雅黑", Helvetica, sans-serif;
+}
+
+.inputs a:hover{
+	color: #D8F79D;
+}
+
+.inputs a:focus{
+	outline: none;
+	-moz-outline-style:none;
+}
+
+.gridb .btn .line{
+	float:left;
+	width:8px;
+	height:50px;
+	background: url("../images/grid/toolbar/line.png") no-repeat;
+}
+.gridb .btn .edt{
+	float:left;
+	width:30px;
+	height:50px;
+	background: url("../images/grid/toolbar/edt.png") no-repeat;
+	cursor: pointer;
+}
+
+.gridb .btn .edt:hover{
+	background: url("../images/grid/toolbar/edt_h.png") no-repeat;
+}
+
+.gridb .btn .edt:focus{
+	outline: none;
+	-moz-outline-style:none;
+}
+
+
+.gridb .btn .del{
+	float:left;
+	width:30px;
+	height:50px;
+	background: url("../images/grid/toolbar/del.png") no-repeat;
+	cursor: pointer;
+}
+
+.gridb .btn .del:focus{
+	outline: none;
+	-moz-outline-style:none;
+}
+
+.gridb .btn .del:hover{
+	background: url("../images/grid/toolbar/del_h.png") no-repeat;
+}
+
+.gridb .ri{
+	float:left;
+	width:23px;
+	height:50px;
+	background: url("../images/grid/toolbar/too_rig3.png") no-repeat top;
+}
+
+.gridb .riD{
+	background: url("../images/grid/toolbar/too_rig3D.png") no-repeat top;
+}
+
+.gridb .riU{
+	background: url("../images/grid/toolbar/too_rig3U.png") no-repeat top;
+}
+
+
+/*end toolbar*/

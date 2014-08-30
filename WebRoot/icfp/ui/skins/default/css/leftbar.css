@@ -1,0 +1,113 @@
+.leftmsg {
+	
+}
+
+.leftmsg .leftbar {
+	position: fixed;
+	width: 50px;
+	left: 0;
+	top: 82px;
+	_position: absolute;
+	text-align: right;
+	cursor: pointer;
+	background-image: url(about:blank);
+}
+
+.leftmsg .leftbar a {
+	display: block;
+	position: relative;
+	height: 30px;
+	line-height: 30px;
+	margin-bottom: 2px;
+	background: #fff;
+	padding-left: 10px;
+	width: 130px;
+	overflow: hidden;
+	cursor: pointer;
+	left: -110px;
+	z-index: 100;
+	border-radius: 3px;
+}
+
+.leftmsg .leftbar a:hover {
+	text-decoration: none;
+	color: #1974A1;
+}
+
+.leftmsg .leftbar a:hover em {
+	background: #00b700
+}
+
+.leftmsg .leftbar a em {
+	display: block;
+	float: right;
+	width: 30px;
+	background: #1974A1;
+	color: #fff;
+	font-size: 16px;
+	text-align: center;
+	margin-left: 10px;
+	border-radius: 3px;
+}
+
+.leftmsg .stores {
+	position: absolute;
+	border: #c8c8c8 1px solid;
+	top: 82px;
+	left: 35px;
+	margin-left: -560px;
+	background: #fdfdfd;
+	-moz-border-radius: 5px;
+	-webkit-border-radius: 5px;
+	border-radius: 5px;
+}
+
+.leftmsg .stores {
+	height: 275px;
+	width: 500px;
+	padding: 5px;
+}
+
+.leftmsg .stores h3 {
+	display: block;
+	width: 100%;
+	height: 30px;
+	line-height: 30px;
+	padding: 0px 0px 5px 0px;
+	margin: 0;
+	border-bottom: 1px solid #cccccc;
+	overflow: hidden;
+}
+
+.leftmsg .stores h3 .text {
+	float: left;
+	font-size: 16px;
+	font-family: 'Microsoft JhengHei', 'Microsoft YaHei', Arial, sans-serif;
+	font-weight: 600;
+	color: #84c017;
+	text-indent: 0.5em;
+	display: block;
+}
+
+.leftmsg .stores h3 .close {
+	display: block;
+	width: 30px;
+	height: 30px;
+	background: url(../images/ejmenu/Smohan.layer.close.png) 0px 0px no-repeat;
+	float: right;
+}
+
+.leftmsg .stores h3 .close:hover {
+	background-position: 0px -31px;
+}
+
+.leftmsg .stores .store_content {
+	display: block;
+	width: 100%;
+	height: 100%;
+	margin-top: 10px;
+	margin-bottom: 10px;
+	padding: 0;
+	overflow: hidden;
+	position: relative;
+}

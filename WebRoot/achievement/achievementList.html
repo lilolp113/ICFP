@@ -1,0 +1,92 @@
+<#list ftlLists as args>
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=8,chrome=1" />
+<title>Insert title here</title>
+<script type="text/javascript" src="icfp/ui/jquery/jquery-1.7.2.min.js"></script>
+<script type="text/javascript" src="icfp/ui/loader.js"></script>
+<script type="text/javascript" src="achievement/js/achievementList.js"></script>
+<link rel="stylesheet" href="achievement/skin/css/css.css" type="text/css"/>
+<link />
+</head>
+<body class="rightbody" style="background-color: #fff;">
+<div class="right">
+	<div class="col leftside">
+		<div class="s-mod-reward-level clearfix">
+			<div class="reward-level">
+				<h3 class="level-title">用户：${args['username']!''}</h3>
+				<div class="my-sq-num ">
+					<div class="bg "></div>
+					<div class="num">
+						<b>${args['score']!'0'}</b>
+					</div>
+				</div>
+				<div class="my-sq-detail">
+					<div class="level-des">
+						<span class="des-cur">
+							<span class="dated">您已打败
+								<i class="cur-level">${args['percent']!'0'}%</i>的员工！ 
+							</span>
+						</span>
+					</div>
+					<div class="grade-rank">
+						<span class="grade level-icon-${args['grade']!'1'}">等级：</span>
+						<span class="rank">排名：
+							<em>${args['rankingSameRole']!'0'}</em>
+						</span>
+					</div>
+					<div class="level-sco clearfix">
+						<span class="sco-total clearfix">
+							<i class="sco-left sco-process"></i> 
+							<i class="sco-center sco-process"></i> 
+							<i class="sco-right sco-process"></i>
+						</span>
+						<span class="sco-current clearfix"> 
+							<i class="sco-left sco-process"></i> 
+							<i class="current-score sco-center sco-process" style="width: ${args['progress']!'0'}px;"></i> 
+							<i class="sco-right sco-process"></i>
+						</span>
+						<span class="sco-detail">
+							<i class="detail-cur">${args['score']!'0'}/${args['upper']!'0'}</i>
+						</span>
+					</div>
+					<div class="level-rights clearfix">
+						距离下一等级还差${args['distance']!'0'}个积分，亲继续努力哟！
+<!--						<div class="rights">-->
+<!--							<a class="rights-a" href="javascript:void(0);" id="rights_a">成就详细说明</a>-->
+<!--						</div>-->
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="view-content">
+			<div class="reward-list-content s-curreward-on" >
+				<h3 class="list-title">我的成就</h3>
+				<div class="s-select-curreward">
+					<span class="select-tag all-tag">
+						<em class="tagname">全部成就</em>
+						<em class="num">58</em>
+					</span>
+					<span>
+						<em class="sep">|</em>
+					</span>
+					<span class="select-tag cur-tag">
+						<em class="tagname">已获成就</em>
+						<em class="num">19</em>
+					</span>
+					<div class="select-vernier" style="left: 0px;">
+						<div class="s-triangle"></div>
+					</div>
+				</div>
+				<ul class="reward-ul clearfix" id="rList">
+					
+				</ul>
+			</div>
+		</div>
+	</div>
+</div>
+</body>
+</html>
+</#list>

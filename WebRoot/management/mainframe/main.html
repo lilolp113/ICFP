@@ -1,0 +1,270 @@
+<#list ftlLists as args>
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=8,chrome=1" />
+<title>${args['title']!''}</title>
+<script type="text/javascript" src="icfp/ui/jquery/jquery-1.7.2.min.js"></script>
+<script type="text/javascript" src="icfp/ui/loader.js"></script>
+<script type="text/javascript" src="icfp/ui/js/jquery.bgresize.js"></script>
+<script type="text/javascript" src="icfp/ui/js/jquery.easing.min.js"></script>
+<style type="text/css">
+#changpw{
+	color: #fff;
+}
+#changpw:HOVER{
+	text-decoration: underline;
+}
+</style>
+</head>
+<body>
+<div id="bg"><img src="icfp/ui/skins/default/images/wallpaper5.jpg"></div>
+<div class="tog_contact">
+	<div class="t_con_box">
+		<div id="menu" class="topmenu">
+			<div class="miaov_box_foot">
+				<span style="left: 0px;" class="caret"></span>
+			</div>
+			<div class="miaov_box">
+			</div>
+		</div>
+	</div>
+</div>
+<div class="tog" id="menubar"><span>菜单导航</span></div>
+<div id="wrapper">
+	<!-- 顶部 -->
+	<div id="header">
+		<div id="logo">
+			<a href="javascript:void(0);">
+				<img src="icfp/ui/skins/default/images/logo1.png" width="167" height="50" />
+			</a>
+		</div>
+		<div class="apps">
+			
+		</div>
+		<div class="weather">
+			<div class="datetime">
+				<p>${args['sysdatestr']!''}</p>
+				<p>${args['nolistr']!''}</p>
+				<p>欢迎您，${args['username']!''}
+				<span class="level level-${args['grade']!'1'}">
+					&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+				</span>&nbsp;[&nbsp;<a href="javascript:void(0)" id="changpw">修改密码</a>&nbsp;]</p>
+			</div>
+		</div>
+	</div>
+	<!-- end顶部 -->
+	<div id="comment">
+		<iframe id="mainframe" name="mainframe" frameborder="0" src="" style="width: 100%;height: 100%" allowTransparency="true"></iframe>
+	</div>
+	<!-- 底部 -->
+	<div id="footer">
+		<ul id="task">
+		</ul>
+		<ul id="place">
+			<li id="bind_home" tipmsg="返回首页">
+				<a href="javascript:void(0);"></a>
+			</li>
+			<li id="bind_logout" tipmsg="返回登录">
+				<a href="javascript:void(0);"></a>
+			</li>
+		</ul>
+		<div id="powered">
+			Powered by <a href="" target="_blank" title="Powered by 1111">11111</a>
+		</div>
+	</div>
+	<div id="footbg" ></div>
+	<!-- end底部 -->
+</div>
+<!--<div class="leftmsg">-->
+<!--	<div class="leftbar">-->
+<!--		<a href="" style="left: -110px;"><em>0</em></a>-->
+<!--		<a href="" style="left: -110px;"><em>1</em></a>-->
+<!--		<a href="" style="left: -110px;"><em>2</em></a>-->
+<!--		<a href="" style="left: -110px;"><em>3</em></a>-->
+<!--		<a href="" style="left: -110px;"><em>4</em></a>-->
+<!--		<a href="" style="left: -110px;"><em>5</em></a>-->
+<!--	</div>-->
+<!--	<div class="stores">-->
+<!--		<h3>-->
+<!--			<b class="text">小测一下</b>-->
+<!--			<a href="javascript:void(0)" class="close">&nbsp;</a>-->
+<!--		</h3>-->
+<!--		<div class="store_content">-->
+<!--		</div>-->
+<!--	</div>-->
+<!--</div>-->
+<table cellspacing="0" cellpadding="0" class="popupcredit">
+	<tr>
+		<td class="pc_l">&nbsp;</td>
+		<td class="pc_c">
+			<div class="pc_inner">恭喜您，积分+</div>
+		</td>
+		<td class="pc_r">&nbsp;</td>
+	</tr>
+</table>
+<script type="text/javascript">
+$(function(){
+	$("#bg").ezBgResize();
+	var height = $('body').height();
+	$('#comment').css('height',height-100);
+	$(window).resize(function(){
+		var _height = $('body').height();
+		$('#comment').css('height',_height-100);
+	});
+	$('#menubar').click(function(){
+		if($('#menubar').hasClass('tog')){
+			menudown();
+		}else if($('#menubar').hasClass('togclose')){
+			menuup();
+		}
+	});
+
+	function menudown(){
+		if($('#menubar').hasClass('tog')){
+			$('#menubar').animate({top:'70px'},300).addClass("togclose").removeClass("tog").html('<span>关闭</span>');
+			$('.tog_contact').slideDown(300);
+		}
+	}
+
+	function menuup(){
+		if($('#menubar').hasClass('togclose')){
+			$('#menubar').animate({top:'0px'},300).addClass("tog").removeClass("togclose").html('<span>菜单导航</span>');
+			$('.tog_contact').slideUp(300);
+		}
+	}
+
+	icfp.win.icfp.cid = "${args['_cid']!''}";
+	icfp.win.icfp.roleid = "${args['roleid']!''}";
+	icfp.win.icfp.sysdate = "${args['sysdate']!''}";
+	var menutrees = icfp.win.icfp.menu.getMenus();
+	var tree = icfp.tree.__formatData('0',menutrees,'SAE001','SAE004','children');
+	initTopmenu(tree);
+	function initTopmenu(tree){
+		if(tree.length==1){
+			var menutree = tree[0]['children'];
+			if(menutree){
+				$.each(menutree,function(index,menu){
+					var a = $('<a></a>');
+					if(menu['children']){
+						$(a).attr('_haschild','true');
+					}else{
+						$(a).attr('_haschild','false');
+					}
+					if(menu['SAE007'] != ''){
+						$(a).attr('_url',menu['SAE007']);
+					}
+					$(a).html(menu['SAE002']);
+					$(a).click(function(){
+						if(menu['children']){
+							initSTopmenu(menu['children'],null,this);
+						}else{
+							initSTopmenu(false,menu['SAE007'],this);
+						}
+					});
+					$('.miaov_box_foot').append(a);
+				});
+			}
+		}
+	}
+
+	function clearTopmenuSelect(){
+		$.each($('.miaov_box_foot a'),function(){
+			if($(this).hasClass("show")){
+				$(this).removeClass("show");
+				return;
+			}
+		});
+	}
+	
+	function initSTopmenu(child,url,obj){
+		var left = $(obj).offset().left+($(obj).width()*0.5);
+		$('.miaov_box_foot span').animate({'left':left},300,function(){
+			clearTopmenuSelect();
+			$(obj).addClass('show');
+		});
+		if(child){
+			$('.miaov_box').html('<ul class="miaov_box_head"></ul>');
+			$.each(child,function(k,v){
+				var li = $('<li></li>');
+				var a = $('<a></a>');
+				$(a).html(v['SAE002']);
+				$(a).click(function(){
+					var url = v['SAE007'];
+					if(url && url!=null && url!='' && url!='null'){
+						icfp.frame.changeurl(url);
+						menuup();
+					}else{
+						icfp.msg.alertWarn("此功能正在努力开发中！",function(){});
+					}
+				});
+				$(li).html($(a));
+				$('.miaov_box_head').append($(li));
+			});
+			var liw = $('.miaov_box_head li').width();
+			var sleft = $('.miaov_box').width()/2 - (liw*child.length)/2;
+			$('.miaov_box_head').animate({'margin-left':sleft},300);
+		}else{
+			$('.miaov_box').html('暂无下级子菜单');
+			if(url && url!=null && url!='' && url!='null'){
+				icfp.frame.changeurl(url);
+				menuup();
+			}else{
+				icfp.msg.alertWarn("此功能正在努力开发中！",function(){});
+			}
+		}
+	}
+
+	$('#bind_home').click(function(){
+		icfp.frame.changeurl('REQ_S_999_03');
+	});
+
+	$('#bind_logout').click(function(){
+		icfp.win.icfp.msg.confirm("是否确认返回登陆页？",function(v){
+			if(v){
+				icfp.cookie.setcookie("tuichu",'11',365 * 24 * 60 * 60 * 1000);
+				location.href = 'CoreAction.do?requestId=REQ_S_999_04&mode=1';
+			}
+		});
+	});
+	
+	var uu = Math.random()*10000;
+	$('#mainframe').attr('src',"CoreAction.do?requestId=REQ_S_999_03&mode=1&userid="+icfp.win.icfp.cid+"&uu="+uu);
+
+	$("#mainframe").load(function(){
+		$(this).contents().find(".rightbody").css('background-color','');
+	});
+
+	var leftbaras = $('.leftbar a');
+	var leftbar_o = null;
+	$('.leftbar a').hover(function(){
+		$('.stores .store_content').html('');
+		leftbar_o = this;
+		$(leftbaras).not(leftbar_o).animate({left:"-140px"},300);
+		var top = $(leftbar_o).offset().top;
+		$(this).stop().animate({left:"0px"},300,'easeOutBack');
+		$('.stores').stop().animate({'marginLeft':'0px','top':top+35},300,'easeInOutBack',function(){
+			$('.stores .store_content').html($('.leftbar a').index(leftbar_o));
+		});
+	},function(){});
+	
+	$('.stores a.close').click(function(){
+		leftbar_o = null;
+		$(leftbaras).stop().animate({left:"-110px"},300,'easeOutBack');
+		$('.stores').stop().animate({'marginLeft':'-650px'},300,'easeOutBack');
+	});
+	
+	$('#changpw').click(function(){
+		icfp.win.icfp.dialog.opend('BSN999_EDT','修改密码',550,220,'REQ_S_999_05');
+	});
+
+	$('.level').click(function(){
+		icfp.frame.changeurl('REQ_S_800_01');
+	});
+	
+});
+</script>
+</body>
+</html>
+</#list>

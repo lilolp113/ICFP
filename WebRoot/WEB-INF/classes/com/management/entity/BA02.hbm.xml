@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+    <class name="com.management.entity.BA02" table="BA02" schema="ITSP">
+        <id name="BAB001" type="java.lang.String">
+            <column name="BAB001" length="9" />
+            <generator class="assigned" />
+        </id>
+        <property name="BAB002" type="java.lang.String">
+            <column name="BAB002" length="50" not-null="true" />
+        </property>
+        <property name="BAB003" type="java.lang.String">
+            <column name="BAB003" length="1" not-null="true" />
+        </property>
+        <property name="BAB004" type="java.lang.String">
+            <column name="BAB004" length="18" />
+        </property>
+        <property name="ZZB001" type="java.lang.String">
+            <column name="ZZB001" length="20" not-null="true" />
+        </property>
+        <property name="ZZB002" type="java.util.Date">
+            <column name="ZZB002" length="7" not-null="true" />
+        </property>
+        <property name="ZZE001" type="java.math.BigDecimal">
+            <column name="ZZE001" precision="20" scale="0" />
+        </property>
+        <property name="ZZE002" type="java.math.BigDecimal">
+            <column name="ZZE002" precision="20" scale="0" />
+        </property>
+        <property name="ZZC001" type="java.lang.String">
+            <column name="ZZC001" length="12" />
+        </property>
+        <property name="ZZD002" type="java.math.BigDecimal">
+            <column name="ZZD002" precision="8" scale="0" />
+        </property>
+        <property name="ZZD003" type="java.lang.String">
+            <column name="ZZD003" length="1" />
+        </property>
+    </class>
+</hibernate-mapping>

@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+    <class name="com.management.entity.MA01" table="MA01" schema="ITSP">
+        <id name="MAA001" type="java.lang.String">
+            <column name="MAA001" length="18" />
+            <generator class="assigned" />
+        </id>
+        <property name="MAA002" type="java.lang.String">
+            <column name="MAA002" length="50" not-null="true" />
+        </property>
+        <property name="MAA003" type="java.lang.String">
+            <column name="MAA003" length="200" not-null="true" />
+        </property>
+        <property name="MAA004" type="java.util.Date">
+            <column name="MAA004" />
+        </property>
+        <property name="MAA005" type="java.lang.String">
+            <column name="MAA005" length="20" />
+        </property>
+        <property name="MAA006" type="java.lang.String">
+            <column name="MAA006" length="10" />
+        </property>
+        <property name="ZZA001" type="java.lang.String">
+            <column name="ZZA001" length="200" />
+        </property>
+        <property name="ZZB001" type="java.lang.String">
+            <column name="ZZB001" length="20" not-null="true" />
+        </property>
+        <property name="ZZB002" type="java.util.Date">
+            <column name="ZZB002" length="7" not-null="true" />
+        </property>
+        <property name="ZZC001" type="java.lang.String">
+            <column name="ZZC001" length="12" not-null="true" />
+        </property>
+        <property name="ZZD002" type="java.math.BigDecimal">
+            <column name="ZZD002" precision="8" scale="0" not-null="true" />
+        </property>
+        <property name="ZZD003" type="java.lang.String">
+            <column name="ZZD003" length="1" not-null="true" />
+        </property>
+        <property name="ZZE001" type="java.math.BigDecimal">
+            <column name="ZZE001" precision="20" scale="0" />
+        </property>
+        <property name="ZZE002" type="java.math.BigDecimal">
+            <column name="ZZE002" precision="20" scale="0" />
+        </property>
+    </class>
+</hibernate-mapping>

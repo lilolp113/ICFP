@@ -1,0 +1,97 @@
+.menutab {
+	width:100%;
+	margin-bottom:10px;
+}
+
+.menutab ul.tabtitle  {
+	list-style: none;
+	padding: 0;
+	margin: 0;
+	height: 45px;
+	border-bottom: 3px solid #000;
+}
+
+.menutab ul.tabtitle li {
+	height: 45px;
+	float: left;
+	overflow: hidden;
+	position: relative;
+	text-align: center;
+	line-height: 45px;
+	
+}
+
+.menutab ul.tabtitle li a {
+	position: relative;
+	display: block;
+	width: 110px;
+	height: 45px;
+	font-family: Arial;
+	font-size: 11px;
+	font-weight: bold;
+	letter-spacing: 1px;
+	text-transform: uppercase;
+	text-decoration: none;
+	cursor: pointer;
+	margin-left: 5px;
+	background: #EEE;
+	color: #000;
+	margin-right: 5px;
+	-moz-border-top-right-radius: 5px;
+	-moz-border-top-left-radius: 5px;
+	-webkit-border-top-right-radius: 5px;
+	-webkit-border-top-left-radius: 5px;
+	border-top-right-radius:5px;
+	border-top-left-radius:5px;
+	box-shadow:2px 2px 4px #666;
+	-moz-box-shadow:2px 2px 4px #666;
+	-webkit-box-shadow:2px 2px 4px #666;
+}
+
+.menutab ul.tabtitle li a span {
+	position: absolute;
+	left: 0;
+	width: 110px;
+	-moz-border-top-right-radius: 5px;
+	-moz-border-top-left-radius: 5px;
+	-webkit-border-top-right-radius: 5px;
+	-webkit-border-top-left-radius: 5px;
+	border-top-right-radius:5px;
+	border-top-left-radius:5px;
+}
+
+.menutab ul.tabtitle li a span.out {
+	top: 0px;
+}
+
+.menutab ul.tabtitle li a span.over,.menutab ul.tabtitle li a span.bg { 
+	top: -45px;
+}
+
+.menutab ul.tabtitle li a span.over {
+	background: #000;
+	color: #fff;
+	
+}
+
+
+.menutab ul.tabtitle li.current a{
+	background: #000;
+	color: #fff;
+}
+
+.menutab .tabinfo{
+	position: relative;
+	width: 100%;
+	height: 100%;
+	margin:0 auto;
+	overflow: hidden;
+}
+
+.menutab .tabinfo .info{
+	position: relative;
+	width: 100%;
+	height: 100%;
+	overflow: hidden;
+	margin-top: 5px;
+}

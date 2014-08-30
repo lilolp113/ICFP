@@ -1,0 +1,153 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=8,chrome=1" />
+<title>Insert title here</title>
+<script type='text/javascript' src='icfp/ui/jquery/jquery-1.7.2.min.js'></script>
+<script type="text/javascript" src="icfp/ui/loader.js"></script>
+<script type="text/javascript">
+icfp.win.icfp.Action.ShowBackGrounp();
+</script>
+<link href="icfp/ui/skins/default/css/gongg.css" rel="stylesheet" type="text/css">
+<script type="text/javascript" src="icfp/ui/js/gongg.js"></script>
+<link href="icfp/ui/skins/default/css/ejmenu.css" rel="stylesheet" type="text/css">
+<script type="text/javascript" src="icfp/ui/js/jquery.ejmenu.js"></script>
+<script type="text/javascript" src="icfp/ui/js/jquery.easing.min.js"></script>
+</head>
+<body style="-moz-user-select:none;">
+<div id="toolbar" class="g_toolbar">
+	<div class="smart-push-f">
+		<a href="javascript:void(0);" class="smart-push"><em>提醒</em></a>
+		<div class="smart-push-pre">
+			<div class="smart-push-pre-ui nodata">
+				<em></em>
+				<h3>暂无提醒信息！</h3>
+				<ul>
+					<li></li>
+					<li></li>
+					<li></li>
+				</ul>
+			</div>
+		</div>
+	</div>
+	<a href="javascript:void(0);" class="setup-tit"><em>设置</em></a>
+</div>
+<div class="scrollbar" style="margin: 0 !important;overflow-y: auto;position: relative;width: 100%;height: 100%">
+	<div class="wrap">
+		<div class="grid">
+			<ul>
+			</ul>
+		</div>
+	</div>
+</div>
+<div class="setup-pop">
+	<div class="setup-arr">
+		<span></span>
+	</div>
+	<a class="setup-cls"></a>
+	<div class="wallpaper">
+		<h4>背景：</h4>
+		<ul>
+			<li class="s1" _img="icfp/ui/skins/default/images/wallpaper4.jpg"></li>
+			<li class="s2 on" _img="icfp/ui/skins/default/images/wallpaper5.jpg"><i></i></li>
+			<li class="s5" title="自定义"></li>
+		</ul>
+	</div>
+	<div class="options">
+		<h4>格子数：</h4>
+		<ul class="gridcount">
+			<li>0</li>
+			<li>8</li>
+			<li class="active">12</li>
+			<li>16</li>
+			<li>20</li>
+		</ul>
+	</div>
+</div>
+<div id="mover" style="position: absolute;display: none;left: 0;top: 0;z-index: 100;" class="mover"></div>
+<div id="ejmenu" style="">
+	<h3>
+		<b class="text"></b>
+		<a href="javascript:void(0)" class="close">&nbsp;</a>
+	</h3>
+	<div class="layer_content">
+		<div class="loading"></div>
+		<div class="_Share">
+			<ul></ul>
+		</div>
+	</div>
+</div>
+<div class="Smohan_Layer_Shade" style="display:none;"></div>
+<!--<div class="Smohan_Layer_box" style="display:none;">-->
+<!--	<h3>-->
+<!--		<b class="text"></b>-->
+<!--		<a href="javascript:void(0)" class="close"></a>-->
+<!--	</h3>-->
+<!--	<div class="layer_content">-->
+<!--		<div class="loading"></div>-->
+<!--		<div class="_Share">-->
+<!--			<ul></ul>-->
+<!--		</div>-->
+<!--	</div>-->
+<!--</div>-->
+<script type="text/javascript" src="icfp/ui/js/gonggE.js"></script>
+<script type="text/javascript">
+$(function(){
+	var $articles = $('.grid ul li');
+	var timeout;
+	$('.grid ul li').on('mouseenter',function(event){
+		var $article = $(this);
+		if($.browser.msie){
+			var w = $article.width();
+			var ww = w * 1.1;
+			var h = $article.height();
+			var hh = h * 1.1;
+			var left = $article.offset().left+5;
+			var top = $article.offset().top+5;
+			var l = left - (ww-w)*0.5;
+			var t = top - (hh-h)*0.5;
+			$('#mover').html($article.html()).css({
+				width:w,
+				height:h,
+				left:left,
+				top:top
+			});
+			$('#mover .box, .box img').css('height', hh + 'px');
+			$('#mover').show().stop().animate({
+				'width':ww,
+				'height':hh,
+				'left':l,
+				'top':t
+			},300,'easeInQuart');
+		}else{
+			clearTimeout(timeout);
+			timeout = setTimeout(function(){
+				if($article.hasClass('active')){
+					 return false;
+				}
+				$articles.not($article.removeClass('blur').addClass('active')).removeClass('active').addClass('blur');
+			},65);
+		}
+	});
+
+	$('.grid ul li').on('mouseleave',function(event) {
+		var $article = $(this);
+		if($.browser.msie){
+			
+		}else{
+			clearTimeout(timeout);
+			$articles.removeClass('active blur');
+		}
+	});
+
+	$('#mover').on('mouseleave',function(event) {
+		if($.browser.msie){
+			$('#mover').hide();
+		}
+	});
+	
+});
+</script>
+</body>
+</html>

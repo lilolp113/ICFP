@@ -1,0 +1,173 @@
+/*Layer*/
+.Smohan_Layer_Shade {
+	position: fixed;
+	_position: absolute;
+	zoom: 1;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+	overflow: hidden;
+	background: url(../images/ejmenu/bai.png) repeat;
+	z-index: 99900;
+}
+
+.Smohan_Layer_box {
+	min-width: 300px;
+	height: auto;
+	padding: 20px;
+	background: #ffffff;
+	position: fixed;
+	_position: absolute;
+	top: 50%;
+	left: 50%;
+	overflow: hidden;
+	z-index: 99999;
+	-moz-border-radius: 10px;
+	-webkit-border-radius: 10px;
+	border-radius: 10px;
+}
+
+.Smohan_Layer_box h3 {
+	display: block;
+	width: 100%;
+	height: 30px;
+	line-height: 30px;
+	padding: 0px 0px 10px 0px;
+	margin: 0;
+	border-bottom: 1px solid #cccccc;
+	overflow: hidden;
+}
+
+.Smohan_Layer_box h3 .text {
+	float: left;
+	font-size: 16px;
+	font-family: 'Microsoft JhengHei', 'Microsoft YaHei', Arial, sans-serif;
+	font-weight: 600;
+	color: #84c017;
+	text-indent: 0.5em;
+	display: block;
+}
+
+.Smohan_Layer_box h3 .close {
+	display: block;
+	width: 30px;
+	height: 30px;
+	background: url(../images/ejmenu/Smohan.layer.close.png) 0px 0px no-repeat;
+	float: right;
+}
+
+.Smohan_Layer_box h3 .close:hover {
+	background-position: 0px -31px;
+}
+
+.Smohan_Layer_box .layer_content {
+	display: block;
+	width: 100%;
+	height: 100%;
+	margin-top: 10px;
+	margin-bottom: 10px;
+	padding: 0;
+	overflow: hidden;
+	position: relative;
+}
+
+.Smohan_Layer_box .layer_content .loading {
+	display: block;
+	width: 36px;
+	height: 36px;
+	background: url(../images/ejmenu/Load.gif) center center no-repeat;
+	position: absolute;
+	top: 0;
+	left: 0;
+}
+
+
+
+#ejmenu{
+	position: absolute;
+	display: none;left: 0;
+	top: 0;
+	z-index: 99999;
+	-moz-border-radius: 10px;
+	-webkit-border-radius: 10px;
+	border-radius: 10px;
+	color:#fff;
+	box-shadow: 0px 1px 1px rgba(0, 0, 0, 0.05);
+	padding: 10px;
+	box-shadow:2px 2px 4px #666;
+	-moz-box-shadow:2px 2px 4px #666;
+	-webkit-box-shadow:2px 2px 4px #666;
+}
+
+#ejmenu h3 {
+	display: block;
+	width: 100%;
+	height: 30px;
+	line-height: 30px;
+	padding: 0px 0px 1px 0px;
+	margin: 0;
+	border-bottom: 2px solid #fff;
+	overflow: hidden;
+}
+
+#ejmenu h3 .text {
+	float: left;
+	font-size: 16px;
+	font-family: 'Microsoft JhengHei', 'Microsoft YaHei', Arial, sans-serif;
+	font-weight: 600;
+	color: #fff;
+	text-indent: 0.5em;
+	display: block;
+}
+
+
+#ejmenu h3 .close {
+	display: block;
+	width: 30px;
+	height: 30px;
+	background: url(../images/ejmenu/Smohan.layer.close.png) 0px 0px no-repeat;
+	float: right;
+}
+
+#ejmenu h3 .close:hover {
+	background-position: 0px -31px;
+}
+
+
+/*Share*/
+._Share {
+	width: 580px;
+	height: 210px;
+	padding: 15px 10px;
+}
+
+._Share ul {
+	margin: 0;
+	padding: 0;
+	list-style-type: none;
+}
+
+._Share ul li {
+	float: left;
+	display: block;
+	height: 30px;
+	width: 105px;
+	text-align:center;
+	margin-left: 5px;
+	margin-right: 5px;
+	cursor: pointer;
+	position: relative;
+	text-align: center;
+}
+
+._Share ul li a{
+	font-size:13px;
+	font-weight: bold;
+	color: #fff;
+	
+}
+
+._Share ul li a:hover{
+	text-decoration: underline;
+}

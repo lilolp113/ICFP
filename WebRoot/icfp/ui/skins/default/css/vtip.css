@@ -1,0 +1,30 @@
+@charset "utf-8";
+.vvv_outer {
+	position:absolute;
+	text-align: left;
+}
+
+table.vvv_border,vvv_dialog{
+	border: 0;
+	margin: 0;
+	border-collapse: collapse;
+	width: auto;
+}
+
+.vvv_nw,.vvv_n,.vvv_ne,.vvv_w,.vvv_c,.vvv_e,.vvv_sw,.vvv_s,.vvv_se,.vvv_main,.vvv_footer{
+	padding: 0;
+}
+
+.vvv_main {
+	text-align: center;
+	min-width: 9em;
+	min-width: 0\9 /*IE8 BUG*/;
+}
+
+.vvv_content {
+	display: inline-block; *
+	zoom: 1; *
+	display: inline;
+	text-align: left;
+	border: none 0;
+}

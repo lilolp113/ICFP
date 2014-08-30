@@ -1,0 +1,69 @@
+<#list ftlLists as args>
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=8,chrome=1" />
+<title>Insert title here</title>
+<script type="text/javascript" src="icfp/ui/jquery/jquery-1.7.2.min.js"></script>
+<script type="text/javascript" src="icfp/ui/loader.js"></script>
+<script type="text/javascript" src="management/user/js/EdtSA05.js"></script>
+</head>
+<body>
+<div class="formcontent">
+	<fieldset>
+		<legend>角色信息</legend>
+		<form id="edtform">
+			<table width="100%">
+				<colgroup>
+					<col style="width: 33.3%;"></col>
+					<col style="width: 33.3%;"></col>
+					<col style="width: 33.3%;"></col>
+				</colgroup>
+				<tr valign="bottom" height="30">
+					<td align="left">用户姓名<font color="red">*</font></td>
+					<td align="left">用户角色<font color="red">*</font></td>
+					<td align="left">登录名称<font color="red">*</font></td>
+				</tr>
+				<tr>
+					<td>
+						<input id="SA05_SAC004" name="SA05_SAC004" type="text" style="width: 95%;" validate="{required:true,maxlength:20}"/>
+					</td>
+					<td>
+						<select id="SA05_SAA001" name="SA05_SAA001" style="width: 97%;" validate="{required:true}">
+							<#assign sa03s = args['SA03List'] >
+							<option value="" selected="selected">--请选择--</option>
+							<#list sa03s as sa03>
+								<option value="${sa03.SAB001}">${sa03.SAB002}</option>
+							</#list>
+						</select>
+					</td>
+					<td>
+						<input id="SA05_SAC002" name="SA05_SAC002" type="text" style="width: 95%;" validate="{required:true,maxlength:40}"/>
+					</td>
+				</tr>
+				<tr valign="bottom" height="30">
+					<td align="left">用户描述<font color="red">*</font></td>
+					<td align="left"></td>
+					<td align="left"></td>
+				</tr>
+				<tr>
+					<td colspan="2">
+						<input id="SA05_SAC005" name="SA05_SAC005" type="text" style="width: 97%;" validate="{maxlength:50}"/>
+					</td>
+					<td></td>
+				</tr>
+			</table>
+		</form>
+	</fieldset>
+</div>
+<div class="formbar">
+	<div class="formbuttons">
+		<input id="save" type="button" class="button blue" value="修改">
+		<input id="delete" type="button" class="button white" value="删除">
+		<input id="colse" type="button" class="button white" value="关闭">
+	</div>
+</div>
+</body>
+</html>
+</#list>

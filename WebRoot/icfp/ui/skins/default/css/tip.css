@@ -1,0 +1,151 @@
+@CHARSET "UTF-8";
+
+.v_tip {
+	position: absolute;
+	max-width: 240px;
+	text-align: left;
+	text-align: left;
+	z-index: 100;
+	display: none;
+}
+
+.v_tip a {
+	margin-left: 0;
+}
+
+.v_tip .icon {
+	background: none;
+}
+
+.v_tip .title a {
+	text-decoration: none;
+}
+
+.v_tip .tl,.v_tip .tr,.v_tip .bl,.v_tip .inner,.v_tip .triangle-t,.v_tip .triangle-b,.v_tip .close{
+	background-image: url(../images/tip/tips.png);
+	_background-image: url(../images/tip/tips_ie6.png);
+}
+
+.v_tip .tl {
+	float: left;
+	background-position: -20px 0;
+}
+
+.v_tip .tr {
+	position: absolute;
+	right: -12px;
+	top: 0;
+	width: 12px;
+	height: 12px;
+	background-position: 100% 0;
+}
+
+.v_tip .bl {
+	position: absolute;
+	left: 0;
+	bottom: -12px;
+	width: 12px;
+	height: 12px;
+	background-position: -20px 100%;
+}
+
+.v_tip .inner {
+	position: relative;
+	left: 12px;
+	width: 220px;
+	margin: 12px 0 -12px 0;
+	max-width: 220px;
+	background-position: 100% 100%;
+	padding: 0 12px 12px 2px;
+	_padding-bottom: 12px;
+}
+
+.v_tip .triangle-t {
+	position: absolute;
+	z-index: 2;
+	top: -7px;
+	width: 15px;
+	height: 8px;
+	overflow: hidden;
+}
+
+.v_tip .triangle-b {
+	position: absolute;
+	bottom: -18px;
+	z-index: 2;
+	width: 15px;
+	height: 11px;
+	overflow: hidden;
+	background-position: 0 -10px;
+}
+
+.v_tip .triangle-l {
+	position: absolute;
+	left: -10px;
+	z-index: 2;
+	top: 15px;
+	width: 15px;
+	height: 18px;
+	overflow: hidden;
+	background: url(../images/tip/tips_l.png) no-repeat;
+	_background-image: url(../images/tip/tips_l_ie6.png) no-repeat;
+}
+
+.v_tip .triangle-r {
+	position: absolute;
+	right: -19px;
+	z-index: 2;
+	top: 15px;
+	width: 15px;
+	height: 18px;
+	overflow: hidden;
+	background: url(../images/tip/tips_r.png) no-repeat;
+	_background-image: url(../images/tip/tips_r_ie6.png) no-repeat;
+}
+
+.v_tip .triangle-t,.v_tip .triangle-b {
+	right: 20px;
+}
+
+.v_tip .close {
+	position: absolute;
+	z-index: 1;
+	top: 10px;
+	right: 2px;
+	width: 9px;
+	height: 9px;
+	text-indent: -99em;
+	overflow: hidden;
+	background-position: 0 -25px;
+	cursor: pointer;
+}
+
+.v_tip .inner .icon {
+	float: left;
+	padding: 2px 0;
+}
+
+.v_tip .inner .icon img {
+	margin-right: 10px;
+}
+
+.v_tip .inner .cont {
+	overflow: hidden;
+	zoom: 1;
+	line-height: 20px;
+}
+
+.v_tip .inner .cont img{
+	vertical-align: middle;
+}
+
+
+.v_tip .inner .title {
+	margin: 0 0 2px 0;
+	font-size: 12px;
+	font-weight: bold;
+}
+
+.v_tip .inner .lk-btn {
+	text-align: right;
+}

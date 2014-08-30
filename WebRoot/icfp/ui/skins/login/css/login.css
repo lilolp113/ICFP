@@ -1,0 +1,482 @@
+html {
+	margin: 0;
+	width: 100%;
+	height: 100%;
+	overflow: hidden;
+}
+
+body {
+	margin: 0;
+	width: 100%;
+	height: 100%;
+	font: 12px/ 1.5 Tahoma, Geneva, "微软雅黑";
+	color: #333B49;
+	overflow: hidden;
+}
+
+*{ margin:0;padding:0;}
+
+form,ul,ol,li,dl,dt,dd,h1,h2,h3,h4,h5 {
+	margin: 0;
+	padding: 0;
+	list-style: none;
+}
+
+a {
+	text-decoration: none;
+	color: #1561C2;
+}
+
+a:hover {
+	color: #F76515;
+}
+
+a img {
+	border: none;
+}
+
+.fl {
+	float: left;
+}
+
+.clear {
+	clear: both;
+}
+
+#header {
+	border-bottom: 1px solid #E4EDF9;
+	color: #3366CC;
+	height: 16px;
+	line-height: 16px;
+	padding: 5px;
+	text-align: right;
+}
+
+#header .fl * {
+	display: inline-block;
+	margin: 0 5px;
+}
+
+#header .fl strong {
+	color: #000;
+}
+
+#main {
+	background-repeat: repeat-x;
+	background-position: 0 -227px;
+	margin-top: 1px;
+}
+
+#conment {
+	margin: 0 auto;
+	width: 1000px;
+	background: url(../images/index_bg.gif) no-repeat 0 53px;
+}
+
+#conment .c-left {
+	margin-top: 97px;
+	float: left;
+}
+
+#conment .c-left h2 {
+	float: left;
+	width:280px;
+	height:220px;
+}
+
+h1.logo{
+	position:absolute;
+	float: left;
+	background:url(../images/logo2.png) no-repeat scroll left center transparent;
+	width:249px;
+	height:58px;
+	cursor:pointer;
+}
+
+#conment .c-left div {
+	float: left;
+	width: 275px;
+	padding-left: 5px;
+}
+
+#conment .c-left h1 {
+	color: #68AD2E;
+	letter-spacing: 1px;
+	font-size: 14px;
+}
+
+#conment .c-left p {
+	color: #848484;
+	margin: 8px 0 40px 0;
+	padding: 0;
+}
+
+#login {
+	padding: 48px 0;
+	width: 396px;
+	float: right;
+	position: relative;
+}
+
+.pt5 {
+	padding-top: 5px !important;
+}
+
+.pb5 {
+	padding-bottom: 5px !important;
+}
+
+.pr0 {
+	padding-right: 0px !important;
+}
+
+#login .loginpanel {
+	position: relative;
+	padding-top: 270px;
+	background: url(../images/login_panel_sprite.png) 0 0 no-repeat;
+}
+
+#login .loginpanel-novcode {
+	padding-top: 200px;
+	margin-top: 20px;
+}
+
+#login .loginpanel .inner {
+	height: 148px;
+	width: 360px;
+	padding: 15px;
+	background: url(../images/login_panel_sprite.png) 0 -240px no-repeat;
+}
+
+#login .loginpanel .inner .panelbody {
+	position: absolute;
+	left: 15px;
+	top: 15px;
+	width: 360px;
+}
+
+#login .loginpanel .header {
+	height: 40px;
+}
+
+#login .loginpanel .header h1 {
+	display: none;
+}
+
+#login .loginpanel .header .others {
+	float: right;
+	padding-top: 12px;
+	padding-right: 15px;
+}
+
+#login .loginpanel .header .others span {
+	vertical-align: ; middle;
+	margin-right: 10px;
+	color: #666;
+}
+
+#login .loginpanel .header .others .alipay,#login .loginpanel .header .others .taobao
+	{
+	display: inline-block; *
+	display: inline; *
+	zoom: 1;
+	width: 16px;
+	height: 16px;
+	text-indent: -9999px;
+	overflow: hidden;
+	background: url(../images/login_panel_sprite.png) -9999px -9999px;
+	vertical-align: middle;
+}
+
+#login .loginpanel .header .others .alipay {
+	background-position: -343px -510px;
+}
+
+#login .loginpanel .header .others .taobao {
+	background-position: -363px -510px;
+}
+
+#login .loginpanel .body {
+	padding: 20px 5px 10px 5px;
+	height: 314px;
+}
+
+#login .loginpanel-novcode .body {
+	height: 244px;
+}
+
+#login .loginpanel-novcode .row-vcode {
+	display: none;
+}
+
+#login .loginpanel .body .row {
+	padding: 2px 0;
+	clear: both; *
+	zoom: 1;
+}
+
+#login .loginpanel .body .row:after {
+	content: ".";
+	display: block;
+	height: 0;
+	clear: both;
+	visibility: hidden;
+}
+
+#login .loginpanel .body .caption {
+	float: left;
+	width: 60px;
+	text-align: right;
+	font-size: 14px;
+	margin-right: 15px;
+	padding-top: 11px;
+}
+
+#login .loginpanel .body .content {
+	float: left;
+}
+
+#login .loginpanel .body .content .textbox {
+	padding: 4px;
+	border-radius: 5px;
+	float: left;
+	position: relative;
+}
+
+#login .loginpanel .body .content .textbox input {
+	border: 1px solid #CCC;
+	border-radius: 3px;
+	padding: 7px 9px;
+	width: 230px;
+	height: 18px;
+	font-size: 14px;
+	display: block;
+	float: left;
+	outline: none;
+}
+
+#login .loginpanel .body .content .textbox-tip input {
+	color: #CCC;
+}
+
+#login .loginpanel .body .buttons .bubble,#login .loginpanel .body .content .textbox .bubble
+	{
+	display: none;
+	position: absolute;
+	left: 20px;
+	top: -28px;
+	border: 1px solid #FACC80;
+	background: #FFFDF1;
+	padding: 4px 10px;
+	border-radius: 3px;
+	color: #F00;
+	font-weight: bold; *
+	zoom: 1;
+}
+
+#login .loginpanel .body .buttons .bubble .arrow,#login .loginpanel .body .content .textbox .bubble .arrow
+	{
+	display: block;
+	position: absolute;
+	bottom: -9px;
+	left: 20px;
+	width: 16px;
+	height: 9px;
+	background: url(../images/login_panel_sprite.png) -317px -515px
+		no-repeat;
+	overflow: hidden;
+	font-size: 0;
+}
+
+#login .loginpanel .body .content .textbox input.vcode {
+	width: 123px;
+}
+
+#login .loginpanel .body .content .textbox-focus {
+	background: #D7E6F6;
+}
+
+#login .loginpanel .body .content .textbox-focus input {
+	border-color: #80A7D3;
+}
+
+#login .loginpanel .body .content .textbox-error {
+	background: #FDEDD3;
+}
+
+#login .loginpanel .body .content .textbox-error input {
+	border-color: #DCBA83;
+}
+
+#login .loginpanel .body .buttons-error .bubble,#login .loginpanel .body .content .textbox-error .bubble
+	{
+	display: block; *
+	zoom: 1;
+}
+
+#login .loginpanel .body .content .texttip {
+	display: block;
+	clear: both;
+	padding-left: 5px;
+}
+
+#login .loginpanel .body  a.vcodepic {
+	display: block;
+	float: left;
+	padding: 4px 0 0 0;
+}
+
+#login .loginpanel .body  a.vcodepic img {
+	width: 100px;
+	height: 30px;
+	border: 1px solid #EEE;
+	padding: 1px 0 1px 1px;
+	border-radius: 3px;
+}
+
+#login .loginpanel .body  a.vcodepic:hover {
+	filter: alpha(opacity =   70);
+	opacity: 0.7
+}
+
+#login .loginpanel .body .buttons {
+	position: relative;
+	padding: 10px 10px 10px 80px;
+}
+
+#login .loginpanel .body .buttons a {
+	vertical-align: middle;
+}
+
+#login .loginpanel .body .buttons .bubble {
+	left: 105px;
+}
+
+#login .loginpanel .body .buttons .checkbox {
+	width: 14px;
+	height: 14px;
+	vertical-align: middle;
+	margin-right: 5px;
+}
+
+#login .loginpanel .body .buttons .checkbox label {
+	display: inline-block; *
+	display: inline; *
+	zoom: 1;
+	vertical-align: middle;
+}
+
+#login .loginpanel .body .loginbtn {
+	margin-left: 10px; display : inline-block; *
+	display: inline; *
+	zoom: 1;
+	width: 103px;
+	height: 35px;
+	background: url(../images/login_panel_sprite.png) 0 -495px no-repeat;
+	overflow: hidden;
+	margin-right: 10px;
+	display: inline-block;
+}
+
+#login .loginpanel .body .loginbtn:hover {
+	filter: alpha(opacity =   80);
+	opacity: 0.8
+}
+
+#login .loginpanel .body .loginbtn-logging,#login .loginpanel .body .loginbtn-logging:hover
+	{
+	background-position: -120px -495px;
+	opacity: 1;
+	filter: alpha(opacity =   100);
+	cursor: default;
+}
+
+#login .loginpanel .body .vcodepic {
+	vertical-align: middle;
+}
+
+#login .loginpanel .footer {
+	text-align: center;
+}
+
+#login .loginpanel .footer {
+	margin: 0 1px;
+	padding-top: 6px; 
+	height : 30px;
+	background: url(../images/login_panel_bottom_bg.gif) 0 0 repeat-x;
+	border-top: 1px solid #E7E7E7;
+	height: 30px;
+}
+
+#login .loginpanel .footer .register {
+	display: block;
+	margin: 15px auto 5px auto;
+	width: 323px;
+	height: 50px;
+	background: url(../images/login_panel_sprite.png) 0 -430px no-repeat;
+	text-indent: -9999px;
+	overflow: hidden;
+}
+
+#login .loginpanel .footer .register:hover {
+	filter: alpha(opacity =   70);
+	opacity: 0.7
+}
+
+#login a.button {
+	vertical-align: middle;
+	background: url(../images/anquan.png) no-repeat;
+}
+
+#login a.button {
+	display: inline-block;
+}
+
+#login a.button {
+	margin-left: 10px;
+	width: 103px;
+	height: 35px;
+	line-height: 35px;
+	text-align: center;
+	font-size: 15px;
+	font-family: "微软雅黑";
+	font-weight: bold; color : #1561C2;
+	border: 0 none;
+	background-position: -80px 0;
+	cursor: pointer;
+	color: #1561C2;
+}
+
+#login a.button:hover {
+	color: #1561C2;
+	background-position: -80px -37px;
+}
+
+#login a.button.active {
+	color: #FFF;
+	background-position: 0 0;
+}
+
+#login a.button.active:hover {
+	color: #FFF;
+	background-position: 0 -37px;
+}
+
+#login .login-btn {
+	font-weight: bold;
+	font-size: 14px;
+	word-spacing: 6px;
+}
+
+#foot {
+	border-top: 1px solid #DDE6EF;
+	width: 100%;
+	line-height: 24px;
+	height: 32px;
+	color: #848484;
+	clear: both;
+	text-align: center;
+	clear: both;
+	padding: 10px 0 20px;
+	line-height: 24px;
+}
