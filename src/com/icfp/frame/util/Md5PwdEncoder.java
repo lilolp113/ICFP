@@ -5,18 +5,7 @@ import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import org.apache.commons.codec.binary.Hex;
 
-/**
- * MD5密码加密
- * @author Administrator
- *
- */
 public class Md5PwdEncoder implements PwdEncoder {
-	
-	/**
-	 * 密码加密
-	 * @param rawPass未加密密码
-	 * @return 加密后密码
-	 */
 	public String encodePassword(String rawPass) {
 		String saltedPass = mergePasswordAndSalt(rawPass, salt, false);
 		MessageDigest messageDigest = getMessageDigest();
@@ -29,15 +18,6 @@ public class Md5PwdEncoder implements PwdEncoder {
 		return new String(Hex.encodeHex(digest));
 	}
 
-	/**
-	 * 验证密码是否正确
-	 * 
-	 * @param encPass
-	 *            加密密码
-	 * @param rawPass
-	 *            未加密密码
-	 * @return
-	 */
 	public boolean isPasswordValid(String encPass, String rawPass) {
 		String pass1 = "" + encPass;
 		String pass2 = encodePassword(rawPass);

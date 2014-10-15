@@ -3,9 +3,9 @@ package com.icfp.frame.action;
 import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-
 import java.lang.reflect.Method;
 import org.apache.log4j.Logger;
+import org.apache.struts2.ServletActionContext;
 import org.springframework.web.context.WebApplicationContext;
 import org.springframework.web.context.support.WebApplicationContextUtils;
 
@@ -13,10 +13,8 @@ import com.icfp.frame.biz.CoreBiz;
 import com.icfp.frame.entity.ZA02;
 import com.icfp.frame.lisence.License;
 import com.icfp.frame.params.RiaParamList;
-import com.icfp.frame.params.SysParamsList;
 import com.icfp.frame.ria.request.RequestEnvelope;
 import com.icfp.frame.ria.response.ResponseEnvelope;
-import com.management.entity.SA05;
 
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -72,18 +70,13 @@ public class CoreAction extends BaseAction {
 		logger.info("CoreAction 执行开始  >>> >>> >>>");
 		ResponseEnvelope responseEnvelope = new ResponseEnvelope();
 		String mode = "0";
-		String cid="";
 		if(License.FLAG) {
 			logger.error("CoreAction 许可证过期，请联系供应商更新！");
 			responseEnvelope.getHeader().setAppCode(RiaParamList.CODE_EXPIRED);
 		}else {
 			logger.info("CoreAction 许可证加载正常");
-			//获取当前登录用户
-			Object object=request.getSession().getAttribute(SysParamsList.LOGIN_SESSION_NAME);
 			RequestEnvelope rqev = new RequestEnvelope(this.getJson());
 			rqev.getBody().setHttpSession(request.getSession());
-			rqev.getBody().setCookie(request.getCookies());
-			rqev.getBody().setServletContext(super.getServletContext(request));
 			Iterator tempIterator = request.getParameterMap().entrySet().iterator();
 			boolean blSepParam = false;
 			String requestId = "";
@@ -114,36 +107,6 @@ public class CoreAction extends BaseAction {
 			    }
 			    rqev.getBody().addParameter(ParameterName, request.getParameter(ParameterName));
 			}
-			if(!RiaParamList.FREEPAGES.contains(requestId)){
-				if (request.getSession().getAttribute(SysParamsList.LOGIN_SESSION_NAME) == null) {
-					request.getSession().removeAttribute(SysParamsList.LOGIN_SESSION_NAME);
-					request.getSession().removeAttribute(SysParamsList.LOGIN_SESSION_USERTYPE);
-					this.setFtlpath("management/util/error/ChaoShi.html");
-					return FREEMARKER;
-				}
-				//判断当前操作用户是否为同一用户
-				if(object!=null){
-					SA05 sa05=(SA05)object;
-					//获取登录用户编号
-					String uid=sa05.getSAC001();
-					String _cid = (String)rqev.getBody().getParameter("_cid");
-					String userid = (String)rqev.getBody().getParameter("userid");
-					if(_cid!=null && !"".equals(_cid)){
-						cid = _cid;
-					}
-					if(userid!=null && !"".equals(userid)){
-						cid = userid;
-					}
-					//获取前台当前操作用户编号
-					if(!uid.equals(cid)){
-						request.getSession().removeAttribute(SysParamsList.LOGIN_SESSION_NAME);
-						request.getSession().removeAttribute(SysParamsList.LOGIN_SESSION_USERTYPE);
-						this.setFtlpath("management/util/error/abnormal.html");
-						return FREEMARKER;
-					}
-				}
-			}
-			
 			logger.info("Request参数：交互编号[" + requestId + "]，业务编号[" + bizId + "]，Method[" + method + "]");
 			if(requestId == null || requestId.trim().equals("")) {
 				logger.error("交互编号为空");
@@ -163,7 +126,6 @@ public class CoreAction extends BaseAction {
 			logger.info("Response输出数据：" + rspsStr);
 			try {
 				HttpServletResponse response = super.getResponse();
-				response.setContentType("text/plain");
 				response.getWriter().println(rspsStr);
 			} catch (IOException e) {
 				e.printStackTrace();

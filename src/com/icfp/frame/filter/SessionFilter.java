@@ -15,11 +15,11 @@ import org.apache.log4j.Logger;
 
 public class SessionFilter implements HttpSessionListener,HttpSessionAttributeListener, ServletContextListener {
 	
-	public static String SYS_DB_USERNAME = "itsp";
+	public static String SYS_DB_USERNAME = "icfp";
 
 	public static String SYS_DB_PASSWORD = "";
 
-	public static String BIZ_DB_USERNAME = "itsp";
+	public static String BIZ_DB_USERNAME = "icfp";
 
 	public static String BIZ_DB_PASSWORD = "";
 
@@ -38,8 +38,10 @@ public class SessionFilter implements HttpSessionListener,HttpSessionAttributeLi
 		InputStream in = servletContext.getResourceAsStream("/WEB-INF/jdbc.properties");
 		try {
 			prop.load(in);
-			SYS_DB_USERNAME = prop.getProperty("jdbc.username").trim();
-			SYS_DB_PASSWORD = prop.getProperty("jdbc.username").trim();
+			SYS_DB_USERNAME = prop.getProperty("username").trim();
+			SYS_DB_PASSWORD = prop.getProperty("password").trim();
+			BIZ_DB_USERNAME = prop.getProperty("username").trim();
+			BIZ_DB_PASSWORD = prop.getProperty("username").trim();
 		} catch (IOException e) {
 			e.printStackTrace();
 		}

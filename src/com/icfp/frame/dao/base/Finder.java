@@ -21,7 +21,7 @@ import com.icfp.frame.params.DaoParamList;
 /**
  * HQL语句分页查询
  * 
- * @author liufei
+ * @author liufang
  * 
  */
 public class Finder {
@@ -38,34 +38,13 @@ public class Finder {
 		}else if(dataStore.getHQL()!=null && !"".equals(dataStore.getHQL())){
 			hqlBuilder = new StringBuilder(dataStore.getHQL());
 		}
-		int index = hqlBuilder.toString().toLowerCase().indexOf("ORDER　BY");
-		if(index<0)
+		if(dataStore.getOrdering()!=null && !"".equals(dataStore.getOrdering()))
 		{
-			if(dataStore.getOrdering()!=null && !"".equals(dataStore.getOrdering()))
-			{
-				int no=dataStore.getOrdering().indexOf("_");
-				if(no>0)
-				{
-					//获取排序字段前缀
-					String str=dataStore.getOrdering().substring(0,no);
-					if("#".equals(str))
-					{
-						hqlBuilder.append(" order by ").append(dataStore.getOrdering().substring(dataStore.getOrdering().indexOf("_")+1)).append("");
-					}else{
-						hqlBuilder.append(" order by ").append(dataStore.getOrdering().replace("_",".")).append("");
-					}
-				}else{
-					hqlBuilder.append(" order by ").append(dataStore.getOrdering()).append("");
-				}
-			}
+			hqlBuilder.append(" order by '").append(dataStore.getOrdering()).append("'");
 		}
+		
 	}
 
-	/**
-	 * 创建finder对象
-	 * @param dataStore
-	 * @return
-	 */
 	public static Finder create(DataStore dataStore) {
 		Finder finder=new Finder(dataStore);
 		return finder;
@@ -79,25 +58,12 @@ public class Finder {
 	/**
 	 * 获得原始hql语句
 	 * 
-	 * @return sql语句
+	 * @return
 	 */
 	public String getOrigHql() {
 		return hqlBuilder.toString();
 	}
 
-	/**
-	 * 获得查询数据库记录数的sql语句。
-	 * 
-	 * @return
-	 */
-	public String getRowCountSql() {
-		String hql = hqlBuilder.toString();
-
-		String projectionHql="select count(*) from (";
-
-		return projectionHql+hql+")_";
-	}
-	
 	/**
 	 * 获得查询数据库记录数的hql语句。
 	 * 

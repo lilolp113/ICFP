@@ -1,62 +1,31 @@
 package com.icfp.frame.dao.impl;
 
+import java.util.List;
+
 import com.icfp.frame.dao.CoreDao;
-import com.icfp.frame.datastore.DataStore;
-import com.icfp.frame.ria.request.RequestEnvelope;
+import com.icfp.frame.entity.ZA02;
 
 /**
  * 核心DAO
  * @author liufei
  *
+ * @param <T>
  */
 public class CoreDaoImpl extends BaseDaoImpl implements CoreDao {
-	
+
 	/**
-	 * 获取所要查询对象信息
-	 * @param revp
-	 * @param dataStore
-	 * @return
+	 * 根据业务编号获取对应信息
 	 */
-	public DataStore queryObject(RequestEnvelope revp,DataStore dataStore)
+	@SuppressWarnings("unchecked")
+	public ZA02 findByBizId(String paramString)
 	{
-		return super.query(revp, dataStore);
-	}
-	
-	/**
-	 * 添加对象信息
-	 * @param revp
-	 * @param dataStore
-	 */
-	public void executeAddObject(RequestEnvelope revp,DataStore dataStore)
-	{
-		super.insert(revp, dataStore);
-	}
-	
-	/**
-	 * 修改对象信息
-	 * @param dataStore
-	 */
-	public void executeEdtObject(DataStore dataStore)
-	{
-		super.update(dataStore);
-	}
-	
-	/**
-	 * 删除对象信息
-	 * @param dataStore
-	 */
-	public void executeDelObject(DataStore dataStore)
-	{
-		super.delete(dataStore);
-	}
-	
-	/**
-	 * 真实性删除对象信息
-	 * @param dataStore
-	 */
-	public void executeRealDelObj(DataStore dataStore)
-	{
-		super.realDel(dataStore);
+		String sql = "select * from za02 z where z.zaa001 = '" + paramString + "'";
+		List list = (List) super.executeSqlByClass(sql, ZA02.class);
+		ZA02 za02 = null;; 
+		if(list != null && list.size() != 0 && !list.isEmpty() && list.get(0)!= null){
+			za02 = (ZA02)list.get(0);
+		}
+		return za02;
 	}
 	
 }

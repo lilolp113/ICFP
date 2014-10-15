@@ -2,7 +2,7 @@ package com.icfp.frame.mail;
 
 import java.util.Properties;
 
-import com.management.entity.AA05;
+import com.icfp.core.entity.AA05;
 
 public class Config {
 

@@ -54,17 +54,6 @@ public class DataStore {
 	/** 待更新数据集 */
 	private List<Object> updateRowSet = new ArrayList<Object>();
 	
-	
-	/*2012-12-17李雷*/
-	/**多表查询 返回map**/
-	private boolean ManyTables = false;
-	
-	//是否进行参数匹配
-	private boolean matchParams =true;
-	
-	//是否自动生成主键
-	private boolean autoPK=true;
-	
 	/**
 	 * 构造方法
 	 */
@@ -81,6 +70,13 @@ public class DataStore {
 		this.setPageSize(1);
 		this.setSQL(SQL);
 	}
+	
+	/*public DataStore(String dataType, String SQL, Object[] params) {
+		this.setDataType(dataType);
+		this.setPageSize(1);
+		this.setSQL(SQL);
+		this.setParams(params);
+	}*/
 
 	/**
 	 * DataStore转换为JSONObject
@@ -149,6 +145,35 @@ public class DataStore {
 			}
 		}
 	}
+
+	/**
+	 * 得到查询条件的sql语句,只有Integer(Date), String类型的查询条件才能使用
+	 * 
+	 * @return conSQL
+	 */
+	/*private String getSQL() {
+		if (sql == null || sql.equals("") || params == null
+				|| params.length <= 0)
+			return "";
+		StringBuffer conSQL = new StringBuffer();
+		conSQL.append(" where ");
+		int b = -1;
+		for (int i = 0; i < params.length; i++) {
+			int e = sql.indexOf(ParamList.MARK, b + 1);
+			conSQL.append(sql.substring(b + 1, e));
+			String[] param = (String[]) params[i];
+			String paramType = param[0];
+			String paramValue = param[1];
+			if (paramType.equals(ParamList.PARAMTYPE_INTEGER)
+					|| paramType.equals(ParamList.PARAMTYPE_DATE))
+				conSQL.append(paramValue);
+			if (paramType.equals(ParamList.PARAMTYPE_STRING))
+				conSQL.append("'" + paramValue + "'");
+			b = e;
+		}
+		conSQL.append(" ");
+		return conSQL.toString();
+	}*/
 
 	/**
 	 * 得到查询条件和排序条件的sql语句
@@ -239,12 +264,8 @@ public class DataStore {
 		int count = this.getRowCount() / this.pageSize;
 		if (count <= 0) {
 			count = 1;
-			this.setPageNo(1);
 		}else {
 			int totalPage = this.getRowCount() % this.pageSize > 0 ? count + 1 : count;
-			if(totalPage<this.getPageNo()){
-				this.setPageNo(totalPage);
-			}
 			this.setTotalPage(totalPage);
 		}
 	}
@@ -272,12 +293,6 @@ public class DataStore {
 	/** 查询语句 */
 	public void setSQL(String SQL) {
 		this.sql = SQL;
-	}
-	
-	/** 查询语句  返回map */
-	public void setSQL(String SQL,boolean manytable) {
-		this.sql = SQL;
-		this.ManyTables = manytable;
 	}
 	
 	/** 查询语句 */
@@ -378,10 +393,6 @@ public class DataStore {
 
 	/** 查询结果数据集 */
 	public void setQueryRowSet(List<Object> queryRowSet) {
-		if(queryRowSet==null)
-		{
-			queryRowSet=new ArrayList<Object>();
-		}
 		this.queryRowSet = queryRowSet;
 		int size = queryRowSet.size();
 		Object[] rows = new Object[size];
@@ -438,32 +449,5 @@ public class DataStore {
 	public void setVpd(boolean vpd) {
 		this.vpd = vpd;
 	}
-
-	public boolean isManyTables() {
-		return ManyTables;
-	}
-
-	public void setManyTables(boolean manyTables) {
-		ManyTables = manyTables;
-	}
 	
-	public boolean isMatchParams()
-	{
-		return matchParams;
-	}
-	
-	public void setMatchParams(boolean matchParam)
-	{
-		matchParams=matchParam;
-	}
-	
-	public boolean isAutoPK()
-	{
-		return autoPK;
-	}
-	
-	public void setAutoPK(boolean autoPk)
-	{
-		autoPK=autoPk;
-	}
 }

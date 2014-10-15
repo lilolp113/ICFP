@@ -24,8 +24,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.icfp.frame.mail.pojo.Mail;
-import com.management.entity.AA05;
-import com.management.entity.MB01;
+import com.icfp.core.entity.AA05;
+import com.icfp.core.entity.MB01;
 
 /**
  * 邮件发送实现

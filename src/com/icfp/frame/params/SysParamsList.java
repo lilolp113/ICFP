@@ -9,18 +9,12 @@ public class SysParamsList {
 	public static String BIZ_DATABASE = "biz";
 
 	public static String LOGIN_SESSION_NAME = "loginUser";
-	
-	public static String LOGIN_SEARCH_NAME = "searUser";
 
 	public static String LOGIN_SESSION_USERTYPE = "loginType";
 
 	public static String SESSION_REPORT_PROTPERTY = "propertyBag";
 
 	public static String HTTPSESSION_KEY = "session";
-	
-	public static String SERVLETCONTEXT_KEY = "serletcontext";
-	
-	public static String COOKIE_KEY = "cookie";
 
 	public static String ONLINEUSER_SESSION_PK = "pk";
 

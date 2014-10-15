@@ -3,16 +3,12 @@ package com.icfp.frame.util;
 
 import org.apache.commons.lang.StringUtils;
 
-/**
- * 字符串工具类
- * @author liufei
- *
- */
 public class StrUtils {
 	/**
 	 * 是否有中文字符
-	 * @param s需判断字符串
-	 * @return true/false
+	 * 
+	 * @param s
+	 * @return
 	 */
 	public static boolean hasCn(String s) {
 		if (s == null) {
@@ -57,8 +53,9 @@ public class StrUtils {
 
 	/**
 	 * 计算GBK编码的字符串的字节数
-	 * @param s 需要计算的字符串
-	 * @return 字节数
+	 * 
+	 * @param s
+	 * @return
 	 */
 	public static int countCn(String s) {
 		if (s == null) {
@@ -77,8 +74,9 @@ public class StrUtils {
 
 	/**
 	 * 文本转html
-	 * @param txt 需转换文本
-	 * @return 转换后文本
+	 * 
+	 * @param txt
+	 * @return
 	 */
 	public static String txt2htm(String txt) {
 		if (StringUtils.isBlank(txt)) {
@@ -117,8 +115,9 @@ public class StrUtils {
 
 	/**
 	 * html转文本
-	 * @param htm文本
-	 * @return 转换后字符串文本
+	 * 
+	 * @param htm
+	 * @return
 	 */
 	public static String htm2txt(String htm) {
 		if (htm == null) {

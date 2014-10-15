@@ -1,7 +1,5 @@
 package com.icfp.frame.datastore.util;
 
-import java.math.BigDecimal;
-import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
@@ -24,43 +22,22 @@ public class DateJsonValueProcessor implements JsonValueProcessor {
 		return this.process(value);
 	}
 
-	public Object processObjectValue(String key, Object value,JsonConfig jsonConfig) {
+	public Object processObjectValue(String key, Object value,
+			JsonConfig jsonConfig) {
 		return this.process(value);
 	}
 
 	private Object process(Object value) {
 		if (value == null) {
 			return "";
-		}else if (value instanceof Date) {
-			String dataStr="";
-			if(value.toString().length()>10)
-			{
-				dataStr=sdf.format((Date) value);
-			}else{
-				dataStr =  sdf2.format((Date) value);
-			}
+		} else if (value instanceof Date) {
+			String dataStr =  sdf.format((Date) value);
 			if(dataStr.endsWith("00:00:00")) {
 				dataStr =  sdf2.format((Date) value);
 			}
 			return dataStr;
-		}else if(value instanceof Timestamp){
-			Date date = new Date(((Timestamp) value).getTime());
-			String dataStr = sdf.format(date);
-			if(dataStr.endsWith("00:00:00")) {
-				dataStr =  sdf2.format(date);
-			}
-			return dataStr;
-		}else if(value instanceof BigDecimal){
-			BigDecimal bidDValue = (BigDecimal) value;
-			return bidDValue;
-		}else if(value instanceof String){
-			String StringValue = (String)value;
-			if("".equals(StringValue) || "null".equals(StringValue) || "NULL".equals(StringValue)){
-				return "";
-			}else{
-				return StringValue;
-			}
-		}else{
+		}
+		else {
 			return value.toString();
 		}
 	}

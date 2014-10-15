@@ -8,15 +8,20 @@ import java.util.Date;
 
 /**
  * 共用辅助方法
+ * 
  * 包含一些零散的便捷方法。
- * @author liufei
+ * 
+ * @author liufang
+ * 
  */
 public class ComUtils {
+	public static final String JSESSION_COOKIE = "JSESSIONID";
+	public static final String JSESSION_URL = "jsessionid";
 
 	/**
 	 * 获得当前时间。由于freemarker的日期必须有具体类型，所以使用timestamp。
 	 * 
-	 * @return 当前时间
+	 * @return
 	 */
 	public static java.sql.Timestamp now() {
 		return new java.sql.Timestamp(System.currentTimeMillis());

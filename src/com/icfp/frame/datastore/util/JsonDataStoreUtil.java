@@ -11,6 +11,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+
 import com.icfp.frame.datastore.DataStore;
 import com.icfp.frame.exception.ApplicationRuntimeException;
 
@@ -121,68 +122,52 @@ public class JsonDataStoreUtil {
 		if (size == 0){
 			return rowSet;
 		}
+		Class dataClass = null;
 		try {
-			Class dataClass = null;
-			if(dataType!=null && !"".equals(dataType)){
-				dataClass = Class.forName(dataType);
-				for (int i = 0; i < size; i++) {
-					JSONObject jO = jsonArray.getJSONObject(i);
-					Object[] row = new Object[2];
-					row[0] = jO.getString(DataStoreParamList.STATUS);
-					JSONObject cellObj = jO.getJSONObject(DataStoreParamList.CELL);
-					String[] dateFormats = { "yyyy-MM-dd HH:mm:ss", "yyyy-MM-dd" };
-					JSONUtils.getMorpherRegistry().registerMorpher(new DateMorpher(dateFormats));
-					Set set = cellObj.keySet();
-					int s = set.size();
-					Iterator iter = set.iterator();
-					List removeKeys = new ArrayList();
-					for (int j = 0; j < s; j++) {
-						Object key = iter.next();
-						String type = "";
-						try {
-							if(dataClass.getDeclaredField((String) key)!=null){
-								type = dataClass.getDeclaredField((String) key).getType().getSimpleName();
-							}
-						} catch (Exception e) {
-							//e.printStackTrace();
-							continue;
-						}
-						if (type.equals("Date")) {
-							Object value = cellObj.get(key);
-							if ((value == null) || (value.toString().trim().equals(""))) {
-								removeKeys.add(key);
-							}
-						}
-					}
-					for (int k = 0; k < removeKeys.size(); k++) {
-						cellObj.remove(removeKeys.get(k));
-					}
-		
-					//row[1] = JSONObject.toBean(cellObj,dataClass);
-					//2012-6-15 李雷修改
-					row[1] = getEntity(cellObj,dataClass);
-					if (row[1] == null){
-						throw new ApplicationRuntimeException("rowSet[" + i + "]中["+ DataStoreParamList.CELL + "]解析错误");
-					}
-					rowSet[i] = row;
-				}
-			}else{
-				for (int i = 0; i < size; i++) {
-					JSONObject jO = jsonArray.getJSONObject(i);
-					Object[] row = new Object[2];
-					row[0] = jO.getString(DataStoreParamList.STATUS);
-					JSONObject cellObj = jO.getJSONObject(DataStoreParamList.CELL);
-					Map map = cellObj;
-					row[1] = map;
-					if (row[1] == null){
-						throw new ApplicationRuntimeException("rowSet[" + i + "]中["+ DataStoreParamList.CELL + "]解析错误");
-					}
-					rowSet[i] = row;
-				}
-			}
-			
+			dataClass = Class.forName(dataType);
 		} catch (ClassNotFoundException e) {
 			e.printStackTrace();
+		}
+		for (int i = 0; i < size; i++) {
+			JSONObject jO = jsonArray.getJSONObject(i);
+			Object[] row = new Object[2];
+			row[0] = jO.getString(DataStoreParamList.STATUS);
+			JSONObject cellObj = jO.getJSONObject(DataStoreParamList.CELL);
+			String[] dateFormats = { "yyyy-MM-dd HH:mm:ss", "yyyy-MM-dd" };
+			JSONUtils.getMorpherRegistry().registerMorpher(new DateMorpher(dateFormats));
+			Set set = cellObj.keySet();
+			int s = set.size();
+			Iterator iter = set.iterator();
+			List removeKeys = new ArrayList();
+			for (int j = 0; j < s; j++) {
+				Object key = iter.next();
+				String type = "";
+				try {
+					if(dataClass.getDeclaredField((String) key)!=null){
+						type = dataClass.getDeclaredField((String) key).getType().getSimpleName();
+					}
+				} catch (Exception e) {
+					//e.printStackTrace();
+					continue;
+				}
+				if (type.equals("Date")) {
+					Object value = cellObj.get(key);
+					if ((value == null) || (value.toString().trim().equals(""))) {
+						removeKeys.add(key);
+					}
+				}
+			}
+			for (int k = 0; k < removeKeys.size(); k++) {
+				cellObj.remove(removeKeys.get(k));
+			}
+
+			//row[1] = JSONObject.toBean(cellObj,dataClass);
+			//2012-6-15 李雷修改
+			row[1] = getEntity(cellObj,dataClass);
+			if (row[1] == null){
+				throw new ApplicationRuntimeException("rowSet[" + i + "]中["+ DataStoreParamList.CELL + "]解析错误");
+			}
+			rowSet[i] = row;
 		}
 		return rowSet;
 	}
@@ -277,7 +262,6 @@ public class JsonDataStoreUtil {
 		return s.substring(0, s.length() - 2);
 	}
 
-	@SuppressWarnings("unchecked")
 	private static List<Object> rowSetToJsonObj(Object[] rowSet) {
 		List<Object> rowset  = new ArrayList<Object>();
 		if ((rowSet == null) || (rowSet.length == 0))
@@ -306,42 +290,13 @@ public class JsonDataStoreUtil {
 				}
 			});
 			JsonValueProcessor jsonProcessor = new DateJsonValueProcessor();
-			//config.registerDefaultValueProcessor(String.class,new DefaultJsonValueProcessor());
-			//config.registerDefaultValueProcessor(BigDecimal.class,new DefaultJsonValueProcessor());
-			config.registerJsonValueProcessor(Timestamp.class,jsonProcessor);
-			config.registerJsonValueProcessor(Date.class,jsonProcessor);
-			config.registerJsonValueProcessor(String.class,jsonProcessor);
-			config.registerJsonValueProcessor(BigDecimal.class,jsonProcessor);
-			
+			config.registerJsonValueProcessor(Date.class, jsonProcessor);
 			//过滤集合属性end
-			//2012-12-03 李雷加
-			if(obj instanceof Map<?,?>){
-				JSONObject jsonObj = JSONObject.fromObject((Map) obj,config);
-				for(Iterator iter = jsonObj.keys();iter.hasNext();){
-					String key = (String)iter.next();
-					String value =  jsonObj.getString(key);
-					if(value==null||"".equals(value)||"null".equals(value)||"NULL".equals(value)){
-						jsonObj.put(key,"");
-					}
-				}
-				JSONObject row = new JSONObject();
-				row.put(DataStoreParamList.STATUS,status);
-				row.put(DataStoreParamList.CELL,jsonObj);
-				rowset.add(row);
-			}else{
-				JSONObject jsonObj = JSONObject.fromObject(obj,config);
-				for(Iterator iter = jsonObj.keys();iter.hasNext();){
-					String key = (String)iter.next();
-					String value =  jsonObj.getString(key);
-					if(value==null||"".equals(value)||"null".equals(value)||"NULL".equals(value)){
-						jsonObj.put(key,"");
-					}
-				}
-				JSONObject row = new JSONObject();
-				row.put(DataStoreParamList.STATUS,status);
-				row.put(DataStoreParamList.CELL,jsonObj);
-				rowset.add(row);
-			}
+			JSONObject jsonObj = JSONObject.fromObject(obj, config);
+			JSONObject row = new JSONObject();
+			row.put(DataStoreParamList.STATUS,status);
+			row.put(DataStoreParamList.CELL,jsonObj);
+			rowset.add(row);
 		}
 		return rowset;
 	}
@@ -422,16 +377,17 @@ public class JsonDataStoreUtil {
 						Object  oValues = (Object)(mm.get(attributeName.toLowerCase())!=null? mm.get(attributeName.toLowerCase()) : mm.get(attributeName.toUpperCase()));
 						try {
 							if(methodParams[0].equals(Integer.TYPE)){
-								defValue = null;//失败默认值
+								defValue = -1;//失败默认值
 								method.invoke(obj, Integer.parseInt(oValues.toString()));
 							}else if(methodParams[0].equals(String.class)){//如果set方法的参数类型是String类型
-								defValue = null;//失败默认值 
+								defValue = "";//失败默认值 
 								method.invoke(obj,oValues.toString());
 							}else if(methodParams[0].equals(Long.TYPE)){
-								defValue = null;//失败默认值  
+								defValue = -1L;//失败默认值  
 								method.invoke(obj, new Long(oValues.toString()));
 							}else if(methodParams[0].equals(Date.class)){
-								defValue = null;
+								defValue = new Date();
+								
 								SimpleDateFormat sdf;
 								if(oValues.toString().toString().length()>10){
 									sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
@@ -441,10 +397,10 @@ public class JsonDataStoreUtil {
 								Date date = sdf.parse(oValues.toString() );
 								method.invoke(obj,date);
 							}else if(methodParams[0].equals(BigDecimal.class)){
-								defValue = null;
+								defValue = 0;
 								method.invoke(obj, new BigDecimal(oValues.toString()));
 							}else if(methodParams[0].equals(Timestamp.class)){
-								defValue = null;
+								defValue = new Date();
 								SimpleDateFormat sdf;
 								if(oValues.toString().toString().length()>10){
 									sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");

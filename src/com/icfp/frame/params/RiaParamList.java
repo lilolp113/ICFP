@@ -1,11 +1,32 @@
 package com.icfp.frame.params;
 
-import java.util.ArrayList;
-import java.util.List;
-
 /**请求数据中的参数
  * @author wangxing
  *2011-09-09
+ */
+/**
+ * @author Administrator
+ *
+ */
+/**
+ * @author Administrator
+ *
+ */
+/**
+ * @author Administrator
+ *
+ */
+/**
+ * @author Administrator
+ *
+ */
+/**
+ * @author Administrator
+ *
+ */
+/**
+ * @author Administrator
+ *
  */
 public class RiaParamList {
 	
@@ -13,11 +34,6 @@ public class RiaParamList {
 	 * 请求编号
 	 */
 	public static String REQUESTID = "requestId";
-	
-	/**
-	 * 拦截器过滤交互编号
-	 */
-	public static List<String> FREEPAGES=new ArrayList<String>();
 	
 	/**
 	 * 业务编号
