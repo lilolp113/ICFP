@@ -47,10 +47,16 @@ public interface BaseDao {
 	public void realDel(DataStore dataStore);
 	
 	/**
-	 * 修改信息
+	 * 修改信息,并发控制
 	 * @param dataStore
 	 */
 	public void update(DataStore dataStore);
+	
+	/**
+	 * 修改信息，不进行并发控制
+	 * @param dataStore
+	 */
+	public void updateWithNoCur(DataStore dataStore);
 	
 
 	public Object get(Serializable id);
@@ -190,13 +196,32 @@ public interface BaseDao {
 	 */
 	public Object createNewEntiey();
 	
-	public Object executeSql(final String sql);
+	/**
+	 * 执行sql语句进行相关增删改操作
+	 */
+	public boolean executeSql(final String sql);
+	
+	/**
+	 * 执行sql语句进行查询操作
+	 * @param sql
+	 * @return
+	 */
+	@SuppressWarnings("unchecked")
+	public List executeQuery(final String sql);
+	
+	/**
+	 * 执行sql语句进行查询，返回对象实体
+	 * @param sql
+	 * @return
+	 */
+	@SuppressWarnings("unchecked")
+	public Object executeUniqueByClass(final String sql,final Class obj);
 	
 	/**
 	 * 通过实例对象查找对象列表
 	 */
 	@SuppressWarnings("unchecked")
-	public List executeSqlByClass(final String sql,final Class obj);
+	public List executeQueryByClass(final String sql,final Class obj);
 	
 	
 	public Date getSysDate();
@@ -210,4 +235,9 @@ public interface BaseDao {
 	
 	public String getAreaCoding(RequestEnvelope requestEnvelope);
 	
+	/**获取系统时间 精确到秒 
+	 * 2012-11-27
+	 * @return date
+	 */
+	public Date getSysDateTime(); 
 }

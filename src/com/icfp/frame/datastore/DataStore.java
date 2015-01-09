@@ -393,6 +393,10 @@ public class DataStore {
 
 	/** 查询结果数据集 */
 	public void setQueryRowSet(List<Object> queryRowSet) {
+		if(queryRowSet==null)
+		{
+			queryRowSet=new ArrayList<Object>();
+		}
 		this.queryRowSet = queryRowSet;
 		int size = queryRowSet.size();
 		Object[] rows = new Object[size];

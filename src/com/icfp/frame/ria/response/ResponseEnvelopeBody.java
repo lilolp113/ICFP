@@ -8,9 +8,9 @@ import java.util.HashMap;
  *
  */
 public class ResponseEnvelopeBody {
-	private HashMap body = new HashMap();
+	
+	private HashMap<String,Object> body = new HashMap<String,Object>();
 
-	@SuppressWarnings("unchecked")
 	public void addParameter(String paramName, Object paramValue) {
 		if (this.body.containsKey(paramName)) {
 			removeParameter(paramName);
@@ -34,7 +34,7 @@ public class ResponseEnvelopeBody {
 		return null;
 	}
 
-	public HashMap getAllParameters() {
+	public HashMap<String,Object> getAllParameters() {
 		return this.body;
 	}
 

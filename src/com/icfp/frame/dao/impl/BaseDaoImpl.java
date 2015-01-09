@@ -19,6 +19,7 @@ import org.apache.commons.beanutils.PropertyUtils;
 import org.apache.commons.lang.StringUtils;
 import org.hibernate.Criteria;
 import org.hibernate.EntityMode;
+import org.hibernate.Hibernate;
 import org.hibernate.HibernateException;
 import org.hibernate.Query;
 import org.hibernate.SQLQuery;
@@ -74,7 +75,6 @@ import org.hibernate.criterion.Order;
 public class BaseDaoImpl extends HibernateDaoSupport implements BaseDao {
 	
 	protected Logger log = LoggerFactory.getLogger(getClass());
-	
 	
 	/**
 	 * 添加信息
@@ -176,8 +176,10 @@ public class BaseDaoImpl extends HibernateDaoSupport implements BaseDao {
 			}
 			
 			this.getHibernateTemplate().save(obj);
+			
 			if (i % DaoParamList.INSERT_SIZE == 0) {
-				this.getSession().flush();
+				this.getHibernateTemplate().flush();
+				this.getHibernateTemplate().clear();
 			}
 		}
 	}
@@ -205,6 +207,10 @@ public class BaseDaoImpl extends HibernateDaoSupport implements BaseDao {
 		{
 			Object object=delRowSet.get(i);
 			this.deleteOrUpdate(getHibernateTemplate(), object,dataStore.getStatus(i),false);
+			if (i % DaoParamList.INSERT_SIZE == 0) {
+				getHibernateTemplate().flush();
+				getHibernateTemplate().clear();
+			}
 		}
 	}
 	
@@ -230,6 +236,10 @@ public class BaseDaoImpl extends HibernateDaoSupport implements BaseDao {
 		{
 			Object object=delRowSet.get(i);
 			this.deleteOrUpdate(getHibernateTemplate(), object,dataStore.getStatus(i),true);
+			if (i % DaoParamList.INSERT_SIZE == 0) {
+				getHibernateTemplate().flush();
+				getHibernateTemplate().clear();
+			}
 		}
 	}
 	
@@ -256,6 +266,39 @@ public class BaseDaoImpl extends HibernateDaoSupport implements BaseDao {
 		{
 			Object object=updateRowSet.get(i);
 			this.deleteOrUpdate(getHibernateTemplate(), object, dataStore.getStatus(i),true);
+			if (i % DaoParamList.INSERT_SIZE == 0) {
+				getHibernateTemplate().flush();
+				getHibernateTemplate().clear();
+			}
+		}
+	}
+	
+	/**
+	 * 修改操作，不进行并发控制
+	 */
+	public void updateWithNoCur(DataStore dataStore)
+	{
+		if (dataStore == null) {
+			logger.error("修改方法中DataStore为空");
+			return;
+		}
+		List<Object> updateRowSet = dataStore.getUpdateRowSet();
+		if (updateRowSet == null || updateRowSet.size() == 0) {
+			logger.error("待修改数据为空，类型[" + dataStore.getDataType() + "]");
+			return;
+		}
+		int size = updateRowSet.size();
+		logger.info("待修改数据: 类型[" + dataStore.getDataType() + "], 个数[" + size
+				+ "]");
+		
+		for(int i=0;i<size;i++)
+		{
+			Object object=updateRowSet.get(i);
+			this.merge(object);
+			if (i % DaoParamList.INSERT_SIZE == 0) {
+				getHibernateTemplate().flush();
+				getHibernateTemplate().clear();
+			}
 		}
 	}
 	
@@ -364,8 +407,10 @@ public class BaseDaoImpl extends HibernateDaoSupport implements BaseDao {
 					+ "]并发正常，修改前未被修改");
 			
 			if (status.equals(DataStoreParamList.STATUS_DELETE)&& sign) {
+				
 				hibernateTemplate.delete(object);
-				//hibernateTemplate.getSessionFactory().getCurrentSession().flush();
+				hibernateTemplate.getSessionFactory().getCurrentSession().flush();
+				hibernateTemplate.flush();
 				return true;
 			}else if(!sign){
 				if (!Arrays.asList(props)
@@ -405,6 +450,7 @@ public class BaseDaoImpl extends HibernateDaoSupport implements BaseDao {
 			}
 			hibernateTemplate.merge(object);
 			//hibernateTemplate.getSessionFactory().getCurrentSession().flush();
+			hibernateTemplate.flush();
 			return true;
 		}else{
 			logger.error("待删/改对象: 类型[" + dataType + "], 主键[" + idKey + "="
@@ -456,67 +502,121 @@ public class BaseDaoImpl extends HibernateDaoSupport implements BaseDao {
 				logger.info("此次查询操作<启用VPD机制失败!>");
 			}
 		}
+		hibernateTemplate.clear();
 		return hibernateTemplate.executeFind(new HibernateCallback()
 	    {
-	      public Object doInHibernate(Session session) throws HibernateException, SQLException {
-	        Query query = null;
-	        Finder finder = null;
-	        List dataList=null;
-	        if ((dataStore.getSQL() != null) && (!"".equals(dataStore.getSQL())))
-	        {
-	          finder = Finder.create(dataStore);
-	          int rowCount = BaseDaoImpl.this.countQueryResult(finder,dataStore);
-	          dataStore.setRowCount(rowCount);
-	          query = session.createSQLQuery(finder.getOrigHql());
-	          query = finder.matchParams(query,dataStore);
-		        if (dataStore.getPageSize() != -1) {
-		          query.setFirstResult(dataStore.getFirstResult());
-		          query.setMaxResults(dataStore.getPageSize());
+			public Object doInHibernate(Session session) throws HibernateException, SQLException {
+		        Query query = null;
+		        Finder finder = null;
+		        List dataList=null;
+		        session.clear();
+		        if ((dataStore.getSQL() != null) && (!"".equals(dataStore.getSQL())))
+		        {
+		          finder = Finder.create(dataStore);
+		          int rowCount = BaseDaoImpl.this.countQueryResult(finder,dataStore);
+		          dataStore.setRowCount(rowCount);
+		          query = session.createSQLQuery(finder.getOrigHql());
+		          query = finder.matchParams(query,dataStore);
+			        if (dataStore.getPageSize() != -1) {
+			          query.setFirstResult(dataStore.getFirstResult());
+			          query.setMaxResults(dataStore.getPageSize());
+			        }
+			        dataList=query.setResultTransformer(Transformers.aliasToBean(dataClass)).list();
 		        }
-		        dataList=query.setResultTransformer(Transformers.aliasToBean(dataClass)).list();
-	        }
-	        if ((dataStore.getHQL() != null) && (!"".equals(dataStore.getHQL())))
-	        {
-	          finder = Finder.create(dataStore);
-	          int rowCount = BaseDaoImpl.this.countQueryResult(finder,dataStore);
-	          dataStore.setRowCount(rowCount);
-	          query = session.createQuery(finder.getOrigHql());
-	          query = finder.matchParams(query,dataStore);
-		        if (dataStore.getPageSize() != -1) {
-		          query.setFirstResult(dataStore.getFirstResult());
-		          query.setMaxResults(dataStore.getPageSize());
+		        if ((dataStore.getHQL() != null) && (!"".equals(dataStore.getHQL())))
+		        {
+		          finder = Finder.create(dataStore);
+		          int rowCount = BaseDaoImpl.this.countQueryResult(finder,dataStore);
+		          dataStore.setRowCount(rowCount);
+		          query = session.createQuery(finder.getOrigHql());
+		          query = finder.matchParams(query,dataStore);
+			        if (dataStore.getPageSize() != -1) {
+			          query.setFirstResult(dataStore.getFirstResult());
+			          query.setMaxResults(dataStore.getPageSize());
+			        }
+			        dataList=query.list();
 		        }
-		        dataList=query.list();
-	        }
-
-	        return dataList;
-	      }
+		        session.flush();
+		        return dataList;
+			}
 	    });
 	}
+	
+	/**
+	 * 获取数据单个对象，返回dataStore
+	 * @param dataStore
+	 * @return store
+	 */
+	public DataStore get(DataStore dataStore) {
+		DataStore store=dataStore;
+		if(store==null)
+		{
+			logger.error("查询方法中DataStore为空");
+			return null;
+		}
+		store.setRowSet(findObj(dataStore));
+		return store;
+	}
 
-
+	/**
+	 * 按HSQL查询唯一对象.
+	 */
+	public Object findObj(final DataStore dataStore)
+	{
+		final Class<?> dataClass = this.getClass(dataStore.getDataType());   //实例化对象
+		getHibernateTemplate().clear();
+	    return getHibernateTemplate().execute(new HibernateCallback()
+	    {
+	      public Object doInHibernate(Session session) throws HibernateException, SQLException {
+	    	Query query=null;
+	    	Finder finder = null;
+	    	Object object=null;
+	    	session.clear();
+	    	if(dataStore.getHQL()!=null && !"".equals(dataStore.getHQL()))
+	    	{
+	    		finder = Finder.create(dataStore);
+	    		query = session.createQuery(finder.getOrigHql());
+		        query = finder.matchParams(query,dataStore);
+		        object=query.uniqueResult();
+	    	}
+	    	if(dataStore.getSQL()!=null && !"".equals(dataStore.getSQL()))
+	    	{
+	    		finder = Finder.create(dataStore);
+	    		query = session.createSQLQuery(finder.getOrigHql());
+		        query = finder.matchParams(query,dataStore);
+		        object=query.setResultTransformer(Transformers.aliasToBean(dataClass)).uniqueResult();
+	    	}
+	    	session.flush();
+	        return object;
+	      }
+	    });
+	  }
 	
 	public Object save(Object entity) {
 		Assert.notNull(entity);
 		this.getHibernateTemplate().save(entity);
+		this.getHibernateTemplate().flush();
 		return entity;
 	}
 
 	public Object update(Object entity) {
-		Assert.notNull(entity);
 		getHibernateTemplate().update(entity);
+		getHibernateTemplate().flush();
 		return entity;
 	}
 
 	public Object saveOrUpdate(Object entity) {
 		Assert.notNull(entity);
 		getHibernateTemplate().saveOrUpdate(entity);
+		getHibernateTemplate().flush();
 		return entity;
 	}
 
 	public Object merge(Object entity) {
-		Assert.notNull(entity);
-		return getHibernateTemplate().merge(entity);
+		Object object=getHibernateTemplate().merge(entity);
+		this.refresh(object);
+		getHibernateTemplate().flush();
+		return object;
 	}
 
 	public void executeDataStore(final DataStore dataStore) {
@@ -535,6 +635,7 @@ public class BaseDaoImpl extends HibernateDaoSupport implements BaseDao {
 		Assert.notNull(id);
 		Object entity = load(id);
 		getHibernateTemplate().delete(entity);
+		getHibernateTemplate().flush();
 		return entity;
 	}
 	
@@ -544,6 +645,7 @@ public class BaseDaoImpl extends HibernateDaoSupport implements BaseDao {
 		if(list!=null && list.size()>0)
 		{
 			getHibernateTemplate().deleteAll(list);
+			getHibernateTemplate().flush();
 		}
 	}
 
@@ -572,7 +674,7 @@ public class BaseDaoImpl extends HibernateDaoSupport implements BaseDao {
 	 *            数量可变的参数
 	 */
 	@SuppressWarnings("unchecked")
-	protected List find(final String hql,final Object... values) {
+	public List find(final String hql,final Object... values) {
 		return getHibernateTemplate().executeFind(new HibernateCallback()
 	    {
 	      public Object doInHibernate(Session session) throws HibernateException, SQLException {
@@ -590,7 +692,7 @@ public class BaseDaoImpl extends HibernateDaoSupport implements BaseDao {
 	/**
 	 * 按HQL查询唯一对象.
 	 */
-	protected Object findUnique(final String hql,final Object[] values)
+	public Object findUnique(final String hql,final Object[] values)
 	{
 	    return getHibernateTemplate().execute(new HibernateCallback()
 	    {
@@ -720,6 +822,7 @@ public class BaseDaoImpl extends HibernateDaoSupport implements BaseDao {
 	    {
 	      public Object doInHibernate(Session session) throws HibernateException, SQLException {
 	        Query query = null;
+	        session.clear();
 	        if ((dataStore.getSQL() != null) && (!"".equals(dataStore.getSQL())))
 	        {
 	          query = session.createSQLQuery(finder.getRowCountHql());
@@ -941,26 +1044,99 @@ public class BaseDaoImpl extends HibernateDaoSupport implements BaseDao {
 	}
 	
 	/**
+	 * 执行sql语句进行相关增删改操作
+	 */
+	public boolean executeSql(final String sql) {
+		int row=0;
+		boolean flag=false;
+		try{
+			row=(Integer)getHibernateTemplate().execute(new HibernateCallback() {
+				public Object doInHibernate(Session session) throws HibernateException,
+				SQLException {
+					Query query=session.createSQLQuery(sql);
+					int row = query.executeUpdate();
+					session.flush();
+					return row;
+				}
+			});
+			logger.info("本次执行的sql语句为："+sql+",操作影响条数为："+row);
+			flag=true;
+		}catch (Exception e) {
+			flag=false;
+		}
+		return flag;
+	}
+	
+	/**
 	 * 执行sql语句获取相应列表
 	 */
 	@SuppressWarnings("unchecked")
-	public List executeSql(final String sql) {
+	public List executeQuery(final String sql) {
 		return getHibernateTemplate().executeFind(new HibernateCallback() {
 			public Object doInHibernate(Session session) throws HibernateException,
 					SQLException {
+				session.clear();
 				return session.createSQLQuery(sql).list();
 			}
 		});
 	}
 	
+	
+	/**
+	 * 执行sql语句获取相应列表 返回结果 键值对
+	 */
 	@SuppressWarnings("unchecked")
-	public List executeSqlByClass(final String sql,final Class obj) {
+	public List executeQueryMap(final String sql) {
+		return getHibernateTemplate().executeFind(new HibernateCallback() {
+			public Object doInHibernate(Session session) throws HibernateException,SQLException {
+				session.clear();
+				SQLQuery query=(SQLQuery)session.createSQLQuery(sql).setResultTransformer(Transformers.ALIAS_TO_ENTITY_MAP);
+				return query.list();
+			}
+		});
+	}
+	
+	
+	
+	/**
+	 * 执行sql语句进行查询，返回对象实体
+	 * @param sql
+	 * @return
+	 */
+	@SuppressWarnings("unchecked")
+	public Object executeUniqueByClass(final String sql,final Class obj)
+	{
+		HibernateCallback hibernatecallback = new HibernateCallback() {
+			public Object doInHibernate(Session session)throws HibernateException, SQLException {
+				Object queryObj=null;
+				session.clear();
+				SQLQuery query = session.createSQLQuery(sql);
+				List list =query.setResultTransformer(Transformers.aliasToBean(obj)).list();
+				session.flush();
+		        if(list!=null && list.size()!=0)
+		        {
+		        	queryObj=list.get(0);
+		        }
+				return queryObj;
+			}
+		};
+		return (Object) this.getHibernateTemplate().execute(hibernatecallback);
+	}
+	
+	/**
+	 * 通过sql语句获取信息列表并封装至相应对象
+	 * @param sql
+	 * @param obj
+	 * @return
+	 */
+	@SuppressWarnings("unchecked")
+	public List executeQueryByClass(final String sql,final Class obj) {
 		HibernateCallback hibernatecallback = new HibernateCallback() {
 			public List doInHibernate(Session session)throws HibernateException, SQLException {
+				session.clear();
 				SQLQuery query = session.createSQLQuery(sql);
 				List<Object> list = query.setResultTransformer(Transformers.aliasToBean(obj)).list();
-				session.clear();
-		        session.close();
+				session.flush();
 				return list;
 			}
 		};
@@ -1107,5 +1283,30 @@ public class BaseDaoImpl extends HibernateDaoSupport implements BaseDao {
 			e.printStackTrace();
 		}
 		return areaCoding;
+	}
+
+
+	public Date getSysDateTime() {
+		List prcDateList = new ArrayList();
+		prcDateList.add(DaoParamList.PRC_DATE);
+		Map<String, String> outParam = new HashMap<String, String>();
+		outParam.put("name", "currenttime ");
+		outParam.put("type", "output");
+		outParam.put("dataType", "String");
+		prcDateList.add(outParam);
+		String currenttime = (String) (ProcUtil.createProcedure_Object(
+				this.getHibernateTemplate(), prcDateList).get(0));
+		if (currenttime == null || currenttime.equals("")) {
+			logger.error("存储过程获取当前时间异常");
+			return null;
+		}
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+		Date date = null;
+		try {
+			date = sdf.parse(currenttime);
+		} catch (ParseException e1) {
+			e1.printStackTrace();
+		}
+		return date;
 	}
 }

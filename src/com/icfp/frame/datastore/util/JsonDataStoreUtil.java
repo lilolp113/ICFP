@@ -7,6 +7,7 @@ import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
@@ -290,13 +291,23 @@ public class JsonDataStoreUtil {
 				}
 			});
 			JsonValueProcessor jsonProcessor = new DateJsonValueProcessor();
-			config.registerJsonValueProcessor(Date.class, jsonProcessor);
+			config.registerJsonValueProcessor(Timestamp.class,jsonProcessor);
+			config.registerJsonValueProcessor(Date.class,jsonProcessor);
 			//过滤集合属性end
-			JSONObject jsonObj = JSONObject.fromObject(obj, config);
-			JSONObject row = new JSONObject();
-			row.put(DataStoreParamList.STATUS,status);
-			row.put(DataStoreParamList.CELL,jsonObj);
-			rowset.add(row);
+			//2012-12-03 李雷加
+			if(obj instanceof Map<?,?>){
+				JSONObject jsonObj = JSONObject.fromObject((Map) obj,config);
+				JSONObject row = new JSONObject();
+				row.put(DataStoreParamList.STATUS,status);
+				row.put(DataStoreParamList.CELL,jsonObj);
+				rowset.add(row);
+			}else{
+				JSONObject jsonObj = JSONObject.fromObject(obj,config);
+				JSONObject row = new JSONObject();
+				row.put(DataStoreParamList.STATUS,status);
+				row.put(DataStoreParamList.CELL,jsonObj);
+				rowset.add(row);
+			}
 		}
 		return rowset;
 	}

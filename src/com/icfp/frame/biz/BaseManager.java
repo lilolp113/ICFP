@@ -21,4 +21,12 @@ public interface BaseManager {
 	
 	public Object getLoginUser(RequestEnvelope rep);
 	
+	public String cul(String curl);
+
+
+	/**获取系统时间 精确到秒 
+	 * 2012-11-27
+	 * @return date
+	 */
+	public Date getSysDateTime(); 
 }

@@ -15,6 +15,8 @@ public class SysParamsList {
 	public static String SESSION_REPORT_PROTPERTY = "propertyBag";
 
 	public static String HTTPSESSION_KEY = "session";
+	
+	public static String COOKIE_KEY = "cookie";
 
 	public static String ONLINEUSER_SESSION_PK = "pk";
 

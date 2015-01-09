@@ -20,7 +20,7 @@ public class CoreDaoImpl extends BaseDaoImpl implements CoreDao {
 	public ZA02 findByBizId(String paramString)
 	{
 		String sql = "select * from za02 z where z.zaa001 = '" + paramString + "'";
-		List list = (List) super.executeSqlByClass(sql, ZA02.class);
+		List list = (List) super.executeQueryByClass(sql, ZA02.class);
 		ZA02 za02 = null;; 
 		if(list != null && list.size() != 0 && !list.isEmpty() && list.get(0)!= null){
 			za02 = (ZA02)list.get(0);

@@ -13,6 +13,7 @@ import com.icfp.frame.biz.CoreBiz;
 import com.icfp.frame.entity.ZA02;
 import com.icfp.frame.lisence.License;
 import com.icfp.frame.params.RiaParamList;
+import com.icfp.frame.params.SysParamsList;
 import com.icfp.frame.ria.request.RequestEnvelope;
 import com.icfp.frame.ria.response.ResponseEnvelope;
 
@@ -77,6 +78,7 @@ public class CoreAction extends BaseAction {
 			logger.info("CoreAction 许可证加载正常");
 			RequestEnvelope rqev = new RequestEnvelope(this.getJson());
 			rqev.getBody().setHttpSession(request.getSession());
+			rqev.getBody().setCookie(request.getCookies());
 			Iterator tempIterator = request.getParameterMap().entrySet().iterator();
 			boolean blSepParam = false;
 			String requestId = "";
@@ -106,6 +108,12 @@ public class CoreAction extends BaseAction {
 			    	logger.info("交互参数中出现特殊参数[" + ParameterName + "=" + request.getParameter(ParameterName) + "]");
 			    }
 			    rqev.getBody().addParameter(ParameterName, request.getParameter(ParameterName));
+			}
+			if(!"REQ_S_001_01".equals(requestId) && !"REQ_Q_001_01".equals(requestId)){
+				if (request.getSession().getAttribute(SysParamsList.LOGIN_SESSION_NAME) == null) {
+					this.setFtlpath("WEB-INF/template/frame/error/ChaoShi.html");
+					return FREEMARKER;
+				}
 			}
 			logger.info("Request参数：交互编号[" + requestId + "]，业务编号[" + bizId + "]，Method[" + method + "]");
 			if(requestId == null || requestId.trim().equals("")) {

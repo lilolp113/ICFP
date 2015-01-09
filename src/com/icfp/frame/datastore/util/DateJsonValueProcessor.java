@@ -1,5 +1,6 @@
 package com.icfp.frame.datastore.util;
 
+import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
@@ -30,14 +31,20 @@ public class DateJsonValueProcessor implements JsonValueProcessor {
 	private Object process(Object value) {
 		if (value == null) {
 			return "";
-		} else if (value instanceof Date) {
+		}else if (value instanceof Date) {
 			String dataStr =  sdf.format((Date) value);
 			if(dataStr.endsWith("00:00:00")) {
 				dataStr =  sdf2.format((Date) value);
 			}
 			return dataStr;
-		}
-		else {
+		}else if(value instanceof Timestamp){
+			Date date = new Date(((Timestamp) value).getTime());
+			String dataStr = sdf.format(date);
+			if(dataStr.endsWith("00:00:00")) {
+				dataStr =  sdf2.format(date);
+			}
+			return dataStr;
+		}else{
 			return value.toString();
 		}
 	}

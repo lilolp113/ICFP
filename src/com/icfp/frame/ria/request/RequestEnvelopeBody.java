@@ -2,6 +2,7 @@ package com.icfp.frame.ria.request;
 
 import java.util.HashMap;
 
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpSession;
 
 import com.icfp.frame.params.SysParamsList;
@@ -13,9 +14,9 @@ import com.icfp.frame.params.SysParamsList;
  * 
  */
 public class RequestEnvelopeBody {
-	private HashMap body = new HashMap();
+	
+	private HashMap<String,Object> body = new HashMap<String,Object>();
 
-	@SuppressWarnings("unchecked")
 	public void addParameter(String paramName, Object paramValue) {
 		if (this.body.containsKey(paramName)) {
 			removeParameter(paramName);
@@ -38,11 +39,10 @@ public class RequestEnvelopeBody {
 		return null;
 	}
 
-	public HashMap getAllParameters() {
+	public HashMap<String,Object> getAllParameters() {
 		return this.body;
 	}
 	
-	@SuppressWarnings("unchecked")
 	public void setHttpSession(HttpSession session) {
 		this.body.put(SysParamsList.HTTPSESSION_KEY, session);
 	}
@@ -50,5 +50,15 @@ public class RequestEnvelopeBody {
 	public HttpSession getHttpSession() {
 		return (HttpSession)this.getParameter(SysParamsList.HTTPSESSION_KEY);
 	}
+	
+	public void setCookie(Cookie[] cookie) {
+		this.body.put(SysParamsList.COOKIE_KEY, cookie);
+	}
+	
+	public Cookie[] getCookie() {
+		return (Cookie[])this.getParameter(SysParamsList.COOKIE_KEY);
+	}
+	
+	
 	
 }

@@ -38,10 +38,8 @@ public class SessionFilter implements HttpSessionListener,HttpSessionAttributeLi
 		InputStream in = servletContext.getResourceAsStream("/WEB-INF/jdbc.properties");
 		try {
 			prop.load(in);
-			SYS_DB_USERNAME = prop.getProperty("username").trim();
-			SYS_DB_PASSWORD = prop.getProperty("password").trim();
-			BIZ_DB_USERNAME = prop.getProperty("username").trim();
-			BIZ_DB_PASSWORD = prop.getProperty("username").trim();
+			SYS_DB_USERNAME = prop.getProperty("jdbc.username").trim();
+			SYS_DB_PASSWORD = prop.getProperty("jdbc.username").trim();
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
