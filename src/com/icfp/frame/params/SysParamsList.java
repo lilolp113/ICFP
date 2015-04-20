@@ -9,6 +9,8 @@ public class SysParamsList {
 	public static String BIZ_DATABASE = "biz";
 
 	public static String LOGIN_SESSION_NAME = "loginUser";
+	
+	public static String LOGIN_SEARCH_NAME = "searUser";
 
 	public static String LOGIN_SESSION_USERTYPE = "loginType";
 

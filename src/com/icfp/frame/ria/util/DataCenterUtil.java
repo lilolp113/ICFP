@@ -19,8 +19,6 @@ import org.apache.log4j.Logger;
 import com.icfp.frame.datastore.DataStore;
 import com.icfp.frame.datastore.util.DataStoreParamList;
 import com.icfp.frame.datastore.util.JsonDataStoreUtil;
-import com.icfp.frame.exception.ApplicationRuntimeException;
-import com.icfp.frame.exception.JsonResolvingException;
 import com.icfp.frame.params.RiaParamList;
 import com.icfp.frame.ria.request.RequestEnvelope;
 import com.icfp.frame.ria.response.ResponseEnvelope;
@@ -34,90 +32,99 @@ public class DataCenterUtil {
 	private static Logger logger = Logger.getLogger(DataCenterUtil.class);
 
 	@SuppressWarnings("unchecked")
-	public static RequestEnvelope wrapped(HttpServletRequest request)throws ApplicationRuntimeException, JsonResolvingException {
+	public static RequestEnvelope wrapped(HttpServletRequest request){
 		logger.info("开始封装请求信息   >>> >>>");
 		RequestEnvelope rqev = new RequestEnvelope();
-		String jsonString = getFromRequest(request);
-		JSONObject jsonObj = JSONObject.fromObject(jsonString);
-		JSONObject paramsObj = jsonObj.getJSONObject(RiaParamList.REQUEST_BODY).getJSONObject(RiaParamList.BODY_PARAMETERS);
-		Iterator items = paramsObj.entrySet().iterator();
-		Object originValue = null;
-		Object value = null;
-		while (items.hasNext()) {
-			Map.Entry entry = (Map.Entry) items.next();
-			originValue = entry.getValue();
-			value = null;
-			if ((originValue instanceof JSONObject)) {
-				if (!((JSONObject) originValue).isNullObject())
-					value = ((JSONObject) originValue).toString();
-			} else if ((originValue instanceof JSONArray))
-				value = ((JSONArray) originValue).toArray();
-			else {
-				value = originValue;
+		try{
+			String jsonString = getFromRequest(request);
+			JSONObject jsonObj = JSONObject.fromObject(jsonString);
+			JSONObject paramsObj = jsonObj.getJSONObject(RiaParamList.REQUEST_BODY).getJSONObject(RiaParamList.BODY_PARAMETERS);
+			Iterator items = paramsObj.entrySet().iterator();
+			Object originValue = null;
+			Object value = null;
+			while (items.hasNext()) {
+				Map.Entry entry = (Map.Entry) items.next();
+				originValue = entry.getValue();
+				value = null;
+				if ((originValue instanceof JSONObject)) {
+					if (!((JSONObject) originValue).isNullObject())
+						value = ((JSONObject) originValue).toString();
+				} else if ((originValue instanceof JSONArray))
+					value = ((JSONArray) originValue).toArray();
+				else {
+					value = originValue;
+				}
+				rqev.getBody().addParameter((String) entry.getKey(), value);
 			}
-			rqev.getBody().addParameter((String) entry.getKey(), value);
-		}
-		
-		JSONObject dataStoresObj = jsonObj.getJSONObject(
-				RiaParamList.REQUEST_BODY).getJSONObject(
-				RiaParamList.BODY_DATASTORES);
-		items = dataStoresObj.entrySet().iterator();
+			
+			JSONObject dataStoresObj = jsonObj.getJSONObject(
+					RiaParamList.REQUEST_BODY).getJSONObject(
+					RiaParamList.BODY_DATASTORES);
+			items = dataStoresObj.entrySet().iterator();
 
-		while (items.hasNext()) {
-			Map.Entry entry = (Map.Entry) items.next();
-			String dataStoreID = (String) entry.getKey();
-			Object storeStr = entry.getValue();
-			DataStore store = JsonDataStoreUtil.jsonStrToDataStore(storeStr.toString());
-			store.separateRowSet(); //进行数据分类操作
-			rqev.getBody().addParameter(dataStoreID, store);
+			while (items.hasNext()) {
+				Map.Entry entry = (Map.Entry) items.next();
+				String dataStoreID = (String) entry.getKey();
+				Object storeStr = entry.getValue();
+				DataStore store = JsonDataStoreUtil.jsonStrToDataStore(storeStr.toString());
+				store.separateRowSet(); //进行数据分类操作
+				rqev.getBody().addParameter(dataStoreID, store);
+			}
+			logger.info("请求详细信息： ");
+			log4Console(jsonString);
+			logger.info("封装请求信息成功 ！<<< <<< ");
+		}catch (Exception e) {
+			//e.printStackTrace();
 		}
-		logger.info("请求详细信息： ");
-		log4Console(jsonString);
-		logger.info("封装请求信息成功 ！<<< <<< ");
 		return rqev;
 
 	}
 	
 	
-	public static RequestEnvelope wrapped(Object jsonstr)throws ApplicationRuntimeException, JsonResolvingException {
+	@SuppressWarnings("unchecked")
+	public static RequestEnvelope wrapped(Object jsonstr){
 		logger.info("开始封装请求信息   >>> >>>");
 		RequestEnvelope rqev = new RequestEnvelope();
-		JSONObject jsonObj = JSONObject.fromObject(jsonstr);
-		JSONObject paramsObj = jsonObj.getJSONObject(RiaParamList.REQUEST_BODY).getJSONObject(RiaParamList.BODY_PARAMETERS);
-		Iterator items = paramsObj.entrySet().iterator();
-		Object originValue = null;
-		Object value = null;
-		while (items.hasNext()) {
-			Map.Entry entry = (Map.Entry) items.next();
-			originValue = entry.getValue();
-			value = null;
-			if ((originValue instanceof JSONObject)) {
-				if (!((JSONObject) originValue).isNullObject())
-					value = ((JSONObject) originValue).toString();
-			} else if ((originValue instanceof JSONArray))
-				value = ((JSONArray) originValue).toArray();
-			else {
-				value = originValue;
+		try {
+			JSONObject jsonObj = JSONObject.fromObject(jsonstr);
+			JSONObject paramsObj = jsonObj.getJSONObject(RiaParamList.REQUEST_BODY).getJSONObject(RiaParamList.BODY_PARAMETERS);
+			Iterator items = paramsObj.entrySet().iterator();
+			Object originValue = null;
+			Object value = null;
+			while (items.hasNext()) {
+				Map.Entry entry = (Map.Entry) items.next();
+				originValue = entry.getValue();
+				value = null;
+				if ((originValue instanceof JSONObject)) {
+					if (!((JSONObject) originValue).isNullObject())
+						value = ((JSONObject) originValue).toString();
+				} else if ((originValue instanceof JSONArray))
+					value = ((JSONArray) originValue).toArray();
+				else {
+					value = originValue;
+				}
+				rqev.getBody().addParameter((String) entry.getKey(), value);
 			}
-			rqev.getBody().addParameter((String) entry.getKey(), value);
-		}
-		
-		JSONObject dataStoresObj = jsonObj.getJSONObject(
-				RiaParamList.REQUEST_BODY).getJSONObject(
-				RiaParamList.BODY_DATASTORES);
-		items = dataStoresObj.entrySet().iterator();
+			
+			JSONObject dataStoresObj = jsonObj.getJSONObject(
+					RiaParamList.REQUEST_BODY).getJSONObject(
+					RiaParamList.BODY_DATASTORES);
+			items = dataStoresObj.entrySet().iterator();
 
-		while (items.hasNext()) {
-			Map.Entry entry = (Map.Entry) items.next();
-			String dataStoreID = (String) entry.getKey();
-			Object storeStr = entry.getValue();
-			DataStore store = JsonDataStoreUtil.jsonStrToDataStore(storeStr.toString());
-			store.separateRowSet(); //进行数据分类操作
-			rqev.getBody().addParameter(dataStoreID, store);
+			while (items.hasNext()) {
+				Map.Entry entry = (Map.Entry) items.next();
+				String dataStoreID = (String) entry.getKey();
+				Object storeStr = entry.getValue();
+				DataStore store = JsonDataStoreUtil.jsonStrToDataStore(storeStr.toString());
+				store.separateRowSet(); //进行数据分类操作
+				rqev.getBody().addParameter(dataStoreID, store);
+			}
+			logger.info("请求详细信息： ");
+			log4Console(jsonstr.toString());
+			logger.info("封装请求信息成功 ！<<< <<< ");
+		} catch (Exception e) {
+			//e.printStackTrace();
 		}
-		logger.info("请求详细信息： ");
-		log4Console(jsonstr.toString());
-		logger.info("封装请求信息成功 ！<<< <<< ");
 		return rqev;
 
 	}
@@ -150,41 +157,42 @@ public class DataCenterUtil {
 		return jsonRequest;
 	}
 
-	@SuppressWarnings("unchecked")
 	public static String toResponseString(ResponseEnvelope responseEnvelope) {
 		logger.info("开始封装响应信息   >>> >>>");
 		JSONObject jsono = new JSONObject();
 		JSONObject head = new JSONObject();
 		JSONObject body = new JSONObject();
 		JSONObject message = new JSONObject();
-		message.put(RiaParamList.MESSAGE_TITLE,responseEnvelope.getHeader().getMsg());
-		message.put(RiaParamList.MESSAGE_DETAIL,responseEnvelope.getHeader().getDetailMsg());
-		head.put(RiaParamList.HEAD_CODE, responseEnvelope.getHeader().getAppCode());
-		head.put(RiaParamList.HEAD_MESSAGE,message);
-		jsono.put(RiaParamList.REQUEST_HEAD, head);
-		body = getDataStoreBody(responseEnvelope.getBody().getAllParameters());
-		jsono.put(RiaParamList.REQUEST_BODY, body);
-		/*StringBuffer dataCenter = new StringBuffer();
-		dataCenter.append("{")
-				  .append(RiaParamList.REQUEST_HEAD + ":{")
-				  .append(RiaParamList.HEAD_CODE + ":")
-				  .append(responseEnvelope.getHeader().getAppCode())
-				  .append("," + RiaParamList.HEAD_MESSAGE + ":{"+ RiaParamList.MESSAGE_TITLE + ":\"")
-				  .append(responseEnvelope.getHeader().getMsg())
-				  .append("\",")
-				  .append(RiaParamList.MESSAGE_DETAIL + ":\"")
-				  .append(responseEnvelope.getHeader().getDetailMsg())
-				  .append("\"}},");
-		
-		String paramsString = getParamsString(responseEnvelope.getBody().getAllParameters());
-		dataCenter.append(paramsString)
-				  .append("}");
-		String respString = dataCenter.toString();*/
-		logger.info("响应详细信息： ");
-		//log4Console(jsono.toString());
-		logger.info("封装响应信息成功 ！<<< <<< ");
+		try{
+			message.put(RiaParamList.MESSAGE_TITLE,responseEnvelope.getHeader().getMsg());
+			message.put(RiaParamList.MESSAGE_DETAIL,responseEnvelope.getHeader().getDetailMsg());
+			head.put(RiaParamList.HEAD_CODE, responseEnvelope.getHeader().getAppCode());
+			head.put(RiaParamList.HEAD_MESSAGE,message);
+			jsono.put(RiaParamList.REQUEST_HEAD, head);
+			body = getDataStoreBody(responseEnvelope.getBody().getAllParameters());
+			jsono.put(RiaParamList.REQUEST_BODY, body);
+			/*StringBuffer dataCenter = new StringBuffer();
+			dataCenter.append("{")
+					  .append(RiaParamList.REQUEST_HEAD + ":{")
+					  .append(RiaParamList.HEAD_CODE + ":")
+					  .append(responseEnvelope.getHeader().getAppCode())
+					  .append("," + RiaParamList.HEAD_MESSAGE + ":{"+ RiaParamList.MESSAGE_TITLE + ":\"")
+					  .append(responseEnvelope.getHeader().getMsg())
+					  .append("\",")
+					  .append(RiaParamList.MESSAGE_DETAIL + ":\"")
+					  .append(responseEnvelope.getHeader().getDetailMsg())
+					  .append("\"}},");
+			
+			String paramsString = getParamsString(responseEnvelope.getBody().getAllParameters());
+			dataCenter.append(paramsString)
+					  .append("}");
+			String respString = dataCenter.toString();*/
+			logger.info("响应详细信息： ");
+			//log4Console(jsono.toString());
+			logger.info("封装响应信息成功 ！<<< <<< ");
+		}catch (Exception e) {
+		}
 		return jsono.toString();
-
 	}
 	
 	private static JSONObject getDataStoreBody(HashMap<String,Object> allParameters){

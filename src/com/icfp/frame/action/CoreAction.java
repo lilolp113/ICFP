@@ -109,8 +109,8 @@ public class CoreAction extends BaseAction {
 			    }
 			    rqev.getBody().addParameter(ParameterName, request.getParameter(ParameterName));
 			}
-			if(!"REQ_S_001_01".equals(requestId) && !"REQ_Q_001_01".equals(requestId)){
-				if (request.getSession().getAttribute(SysParamsList.LOGIN_SESSION_NAME) == null) {
+			if(!RiaParamList.FREEPAGES.contains(requestId)){
+				if (request.getSession().getAttribute(SysParamsList.LOGIN_SESSION_NAME) == null && request.getSession().getAttribute(SysParamsList.LOGIN_SEARCH_NAME) == null) {
 					this.setFtlpath("WEB-INF/template/frame/error/ChaoShi.html");
 					return FREEMARKER;
 				}
@@ -134,6 +134,7 @@ public class CoreAction extends BaseAction {
 			logger.info("Response输出数据：" + rspsStr);
 			try {
 				HttpServletResponse response = super.getResponse();
+				response.setContentType("text/plain");
 				response.getWriter().println(rspsStr);
 			} catch (IOException e) {
 				e.printStackTrace();

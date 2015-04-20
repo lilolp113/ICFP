@@ -1,5 +1,6 @@
 package com.icfp.frame.datastore.util;
 
+import java.math.BigDecimal;
 import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -23,8 +24,7 @@ public class DateJsonValueProcessor implements JsonValueProcessor {
 		return this.process(value);
 	}
 
-	public Object processObjectValue(String key, Object value,
-			JsonConfig jsonConfig) {
+	public Object processObjectValue(String key, Object value,JsonConfig jsonConfig) {
 		return this.process(value);
 	}
 
@@ -44,6 +44,16 @@ public class DateJsonValueProcessor implements JsonValueProcessor {
 				dataStr =  sdf2.format(date);
 			}
 			return dataStr;
+		}else if(value instanceof BigDecimal){
+			BigDecimal bidDValue = (BigDecimal) value;
+			return bidDValue;
+		}else if(value instanceof String){
+			String StringValue = (String)value;
+			if("".equals(StringValue) || "null".equals(StringValue) || "NULL".equals(StringValue)){
+				return "";
+			}else{
+				return StringValue;
+			}
 		}else{
 			return value.toString();
 		}

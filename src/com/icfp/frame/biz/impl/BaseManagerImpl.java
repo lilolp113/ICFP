@@ -16,8 +16,6 @@ import com.icfp.frame.params.SysParamsList;
 import com.icfp.frame.ria.request.RequestEnvelope;
 import com.icfp.core.entity.SA05;
 
-import net.sf.json.JSONObject;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -108,5 +106,29 @@ public class BaseManagerImpl implements BaseManager {
 
 	public Date getSysDateTime() {
 		return basedao.getSysDateTime();
+	}
+	
+	public Object getQuerySysLoginUser(RequestEnvelope rep)
+	{
+		Object obj =rep.getBody().getHttpSession().getAttribute(SysParamsList.LOGIN_SEARCH_NAME);
+		return obj;
+	}
+	
+	public String getQuerySysLoginUID(RequestEnvelope rep)
+	{
+		SA05 sa05 = (SA05)rep.getBody().getHttpSession().getAttribute(SysParamsList.LOGIN_SEARCH_NAME);
+		return sa05.getSAC001();
+	}
+	
+	public String getQuerySysLoginUName(RequestEnvelope rep)
+	{
+		SA05 sa05 = (SA05)rep.getBody().getHttpSession().getAttribute(SysParamsList.LOGIN_SEARCH_NAME);
+		return sa05.getSAC004();
+	}
+	
+	public String getQuerySysLoginRID(RequestEnvelope rep)
+	{
+		SA05 sa05 = (SA05)rep.getBody().getHttpSession().getAttribute(SysParamsList.LOGIN_SEARCH_NAME);
+		return sa05.getSAA001();
 	}
 }

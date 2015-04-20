@@ -223,6 +223,10 @@ public interface BaseDao {
 	@SuppressWarnings("unchecked")
 	public List executeQueryByClass(final String sql,final Class obj);
 	
+	/**
+	 * 执行sql语句获取相应列表 返回结果 键值对
+	 */
+	public List executeQueryMap(final String sql);
 	
 	public Date getSysDate();
 	
@@ -240,4 +244,6 @@ public interface BaseDao {
 	 * @return date
 	 */
 	public Date getSysDateTime(); 
+	
+	public List executeQueryMapByPage(final DataStore dataStore);
 }

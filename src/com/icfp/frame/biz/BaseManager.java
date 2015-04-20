@@ -29,4 +29,6 @@ public interface BaseManager {
 	 * @return date
 	 */
 	public Date getSysDateTime(); 
+	
+	public Object getQuerySysLoginUser(RequestEnvelope rep);
 }

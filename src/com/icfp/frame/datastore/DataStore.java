@@ -54,6 +54,14 @@ public class DataStore {
 	/** 待更新数据集 */
 	private List<Object> updateRowSet = new ArrayList<Object>();
 	
+	
+	/*2012-12-17李雷*/
+	/**多表查询 返回map**/
+	private boolean ManyTables = false;
+	
+	//是否进行参数匹配
+	private boolean matchParams =true;
+	
 	/**
 	 * 构造方法
 	 */
@@ -295,6 +303,12 @@ public class DataStore {
 		this.sql = SQL;
 	}
 	
+	/** 查询语句  返回map */
+	public void setSQL(String SQL,boolean manytable) {
+		this.sql = SQL;
+		this.ManyTables = manytable;
+	}
+	
 	/** 查询语句 */
 	public String getHQL() {
 		return hql;
@@ -452,6 +466,24 @@ public class DataStore {
 
 	public void setVpd(boolean vpd) {
 		this.vpd = vpd;
+	}
+
+	public boolean isManyTables() {
+		return ManyTables;
+	}
+
+	public void setManyTables(boolean manyTables) {
+		ManyTables = manyTables;
+	}
+	
+	public boolean isMatchParams()
+	{
+		return matchParams;
+	}
+	
+	public void setMatchParams(boolean matchParam)
+	{
+		matchParams=matchParam;
 	}
 	
 }
