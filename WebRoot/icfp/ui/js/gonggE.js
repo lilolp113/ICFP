@@ -176,11 +176,7 @@ $(function(){
 				setupPush.slideUp();
 			}
 		}else{
-			if(setupPush.hasClass('smart-push-pre-end')){
-				setupPush.removeClass('smart-push-pre-end');
-			}else{
-				setupPush.addClass('smart-push-pre-end');
-			}
+			setupPush.toggleClass('smart-push-pre-end');
 		}
 	});
 
@@ -202,15 +198,35 @@ $(function(){
 			if($('.setup-pop').is(':visible') && !$('.setup-pop').is(':animated')){
 				var setupPop = $('.setup-pop');
 				setupPop.removeClass('setup-pop-end');
+				if($.browser.msie){
+					$('.setup-pop').hide();
+				}
+			}
+		}
+		if(!$(e.target).parents('.smart-push-pre').length && e.target.className != 'smart-push'){
+			if($('.smart-push-pre').is(':visible') && !$('.smart-push-pre').is(':animated')){
+				var setupPush = $('.smart-push-pre');
+				setupPush.removeClass('smart-push-pre-end');
+				if($.browser.msie){
+					$('.smart-push-pre').hide();
+				}
 			}
 		}
 	});
 	
 	$(icfp.win.document).mousedown(function(e){
-		if(!$(e.target).parents('.setup-pop').length && e.target.className != 'setup-tit'){
-			if($('.setup-pop').is(':visible') && !$('.setup-pop').is(':animated')){
-				var setupPop = $('.setup-pop');
-				setupPop.removeClass('setup-pop-end');
+		if($('.setup-pop').is(':visible') && !$('.setup-pop').is(':animated')){
+			var setupPop = $('.setup-pop');
+			setupPop.removeClass('setup-pop-end');
+			if($.browser.msie){
+				$('.setup-pop').hide();
+			}
+		}
+		if($('.smart-push-pre').is(':visible') && !$('.smart-push-pre').is(':animated')){
+			var setupPush = $('.smart-push-pre');
+			setupPush.removeClass('smart-push-pre-end');
+			if($.browser.msie){
+				$('.smart-push-pre').hide();
 			}
 		}
 	});

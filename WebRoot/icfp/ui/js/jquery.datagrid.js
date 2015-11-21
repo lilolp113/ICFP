@@ -977,11 +977,23 @@
 				}else{
 					trHtml.push(' nowrap vstripe');
 				}
+				
 				trHtml.push('"><span class="');
 				if(p.nowrap){
 				    trHtml.push('nowrap');
 				}
-				trHtml.push('">');
+				trHtml.push('"');
+				if(col.formatstyle){
+					var _style = col.formatstyle(row[col.name],row,iindex);
+					if(_style){
+						var _stylestr = [];
+						$.each(_style,function(k,v){
+							_stylestr.push(k+":"+v);
+						});
+						trHtml.push(' style="'+_stylestr.join(";")+'" ');
+					}
+				}
+				trHtml.push('>');
 				var vv = '';
 				if(col.format){
 					if(isChecked){
@@ -1264,6 +1276,8 @@
 				$.each($tr.find('td'),function(index,td){
 					if(!o.columns[index].hide && o.columns[index].edtpanel){
 						$(this).children('span').clone().prependTo(this);
+						$('span:eq(1)',td).attr('style',"");
+						$('span:eq(1)',td).removeClass('nowrap');
 						var vv = row.cell[o.columns[index].name];
 						var w = $(td).width();
 						var $el = $(o.columns[index].edtpanel);
@@ -1279,7 +1293,7 @@
 							}
 							$el.css('width',w);
 						}else if($el[0].tagName === 'INPUT'){
-							$el.css('width',w-5);
+							$el.css('width',w-7);
 						}
 						$el.val(vv);
 						$('span:eq(0)',td).hide();
@@ -1402,6 +1416,31 @@
 						sslrows[_edtIndex].cell[o.columns[index].name] = vv;
 					}
 				});
+			}
+		},
+		changeStyle:function(opt){
+			/*
+			 * opt = {};
+			 * opt.style = {"color":"red","":""};
+			 * opt.colname = "";
+			 * */
+			if(opt.style && opt.style !="" && opt.colname && opt.colname != ""){
+				var o = this,p = this.options,dg = this.element;
+				var $tr = o.$body.find('tr.selected');
+				if($tr && $tr.size()>0){
+					$.each($tr.find('td'),function(index,td){
+						if(o.columns[index].name == opt.colname){
+							var _stylestr = [];
+							$.each(opt.style,function(k,v){
+								_stylestr.push(k+":"+v);
+							});
+							$('span:eq(0)',td).attr('style',_stylestr.join(";"));
+							return false;
+						}
+					});
+				}
+			}else{
+				return;
 			}
 		},
 		getSelectedRow:function(){

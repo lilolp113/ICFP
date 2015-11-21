@@ -2,7 +2,7 @@
 <!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
 "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
 <hibernate-mapping>
-    <class name="com.management.entity.MA01" table="MA01" schema="ICFP">
+    <class name="com.management.entity.MA01" table="MA01" schema="ITSP">
         <id name="MAA001" type="java.lang.String">
             <column name="MAA001" length="18" />
             <generator class="assigned" />

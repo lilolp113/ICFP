@@ -97,27 +97,32 @@ $(function(){
 				$('div.item-icon img',$temp).attr("src","achievement/skin/icons/"+img);
 				$('div.det-title h4.title-h4',$temp).html(title);
 				$('div.det-title span.title-des',$temp).html(con+"。");
-				$('.des-wrapper .des-score',$temp).html("LV"+rowset.cell['ZDE005']);
+				
 				var hlevel = rowset.cell['ZDE005'];
-				if(hlevel == '0'){
+				var shenj = rowset.cell['ZDE003'];
+				if(shenj == '0'){
 					$('div.level-sco',$temp).html('');
-					
-				}else{
+					$('.des-show span',$temp).html("勋章状态");
+					$('.des-wrapper .des-score',$temp).html("未获得");
+				}else if(hlevel != "0"){
+					//$('.des-show span',$temp).html("最大");
+					//$('.des-wrapper .des-score',$temp).html("LV"+rowset.cell['ZDE005']);
+					$('.des-show span',$temp).html("勋章状态");
+					$('.des-wrapper .des-score',$temp).html("未获得");
 					$('div.level-sco i.detail-cur',$temp).html("LV0/LV"+hlevel+"");
 					$('div.level-sco',$temp).attr('hlevel',hlevel);
+					if(zd05rowsetall!=null && zd05rowsetall.length>0){
+						var ul = ["<ul>"];
+						$.each(zd05rowsetall,function(_index,rowseta){
+							if(title == rowseta.cell['ZDE013']){
+								var li = "<li>等级LV"+rowseta.cell['ZDE005']+"："+rowseta.cell['ZDE011']+"</li>";
+								ul.push(li);
+							}
+						});
+						ul.push("</ul>");
+						$('div.r-center-show',$temp).html(ul.join(" "));
+					}
 				}
-				if(zd05rowsetall!=null && zd05rowsetall.length>0){
-					var ul = ["<ul>"];
-					$.each(zd05rowsetall,function(_index,rowseta){
-						if(title == rowseta.cell['ZDE013']){
-							var li = "<li>等级LV"+rowseta.cell['ZDE005']+"："+rowseta.cell['ZDE011']+"</li>";
-							ul.push(li);
-						}
-					});
-					ul.push("</ul>");
-					$('div.r-center-show',$temp).html(ul.join(" "));
-				}
-				
 				$($temp).click(function(){
 					if($('a.slid-btn',this).hasClass('slid-down')){
 						$('a.slid-btn',this).removeClass('slid-down');
@@ -153,22 +158,28 @@ $(function(){
 						$li.removeClass('reward-unfinished');
 					}
 					$li.addClass('reward-done');
-					var lv = rowset.cell['ZDE005'];
-					$('.des-wrapper .des-score',$li).html("LV"+lv);
-					if($('.des-wrapper',$li).hasClass('des-notime')){
-						$('.des-wrapper',$li).removeClass('des-notime');
-					}
 					var date = rowset.cell['ZDF002'];
 					date = date.substring(0,10);
 					$('.des-wrapper .des-time',$li).html(date);
-					$('.des-show span',$li).html("当前获得级别及时间");
-					$('div.det-title span.title-des',$li).append("(当前"+title+"为："+rowset.cell['ZDF003']+")");
-					var hlevel = $('div.level-sco',$li).attr('hlevel');
-					if(hlevel){
-						$('div.level-sco i.detail-cur',$li).html("LV"+lv+"/LV"+hlevel+"");
-						lv = lv*1;
-						hlevel = hlevel*1;
-						$('div.level-sco span.sco-current i.sco-center',$li).css('width',(lv/hlevel)*410);
+					var lv = rowset.cell['ZDE005'];
+					var shenj = rowset.cell['ZDE003'];
+					if(shenj == '0'){
+						$('.des-wrapper .des-score',$li).html("已获得");
+						$('.des-show span',$li).html("勋章状态及获得时间");
+					}else{
+						$('.des-wrapper .des-score',$li).html("LV"+lv);
+						$('div.det-title span.title-des',$li).append("(当前"+title+"为："+rowset.cell['ZDF003']+")");
+						$('.des-show span',$li).html("当前获得级别及时间");
+						var hlevel = $('div.level-sco',$li).attr('hlevel');
+						if(hlevel){
+							$('div.level-sco i.detail-cur',$li).html("LV"+lv+"/LV"+hlevel+"");
+							lv = lv*1;
+							hlevel = hlevel*1;
+							$('div.level-sco span.sco-current i.sco-center',$li).css('width',(lv/hlevel)*410);
+						}
+					}
+					if($('.des-wrapper',$li).hasClass('des-notime')){
+						$('.des-wrapper',$li).removeClass('des-notime');
 					}
 				}
 			});
